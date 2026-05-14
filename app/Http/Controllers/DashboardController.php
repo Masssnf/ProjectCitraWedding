@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -16,12 +17,28 @@ class DashboardController extends Controller
 
     public function index()
     {
+        // ==========================================
+        // 1. CEK ROLE (SATAM PINTU DEPAN)
+        // ==========================================
+        $user = Auth::user();
+
+        // Jika user adalah CLIENT, langsung lemparkan ke halaman katalog paket.
+        // Fungsi ini akan berhenti di sini dan tidak melanjutkan kode di bawahnya.
+        if ($user->role === 'CLIENT') {
+            return redirect()->route('paket.index');
+        }
+
+
+        // ==========================================
+        // 2. PERSIAPAN DATA DASHBOARD (KHUSUS ADMIN/OWNER)
+        // ==========================================
+
+        // Karena Client sudah dilempar ke tempat lain, kode di bawah ini 
+        // dijamin hanya akan dieksekusi jika yang login adalah Admin/Owner.
+
         $totalBooking = Transaksi::count();
-
         $totalPembayaran = Transaksi::sum('total_bayar');
-
         $totalClient = Client::distinct('id')->count('id');
-
         $daftarTanggalAcara = Transaksi::orderBy('tanggal_acara', 'asc')->get();
 
         $now = Carbon::now();
@@ -47,6 +64,7 @@ class DashboardController extends Controller
                 return $transaksi;
             });
 
+        // Render tampilan dashboard dan kirimkan data
         return view('dashboard', compact(
             'totalBooking',
             'totalClient',
@@ -56,7 +74,7 @@ class DashboardController extends Controller
             'daysInMonth',
             'startDay',
             'daftarAcara',
-            'totalPembayaran' // tambahkan variabel ini
+            'totalPembayaran'
         ));
     }
 

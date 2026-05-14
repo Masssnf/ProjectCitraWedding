@@ -52,6 +52,10 @@ class PaketController extends Controller
      */
     public function create()
     {
+        if (Auth::user()->role === 'CLIENT') {
+            abort(403, 'Akses Ditolak. Anda bukan Admin.');
+        }
+
         $album = Album::all();
         $makeup = Makeup::all();
         $user = User::all();
@@ -78,6 +82,10 @@ class PaketController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::user()->role === 'CLIENT') {
+            abort(403, 'Akses Ditolak. Anda bukan Admin.');
+        }
+
         $data = [
             'id_client' => $request->input('id_client'),
             'kode_paket' => $request->input('kode_paket'),
@@ -124,51 +132,35 @@ class PaketController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $album = Album::find($request->input('id_album'));
-        $makeup = Makeup::find($request->input('id_makeup'));
-        $catering = Catering::find($request->input('id_catering'));
-        $hiburan = Hiburan::find($request->input('id_hiburan'));
-        $tenda = Tenda::find($request->input('id_tenda'));
-        $dekorasi = Dekorasi::find($request->input('id_dekorasi'));
-        $wardrobe = Wardrobe::find($request->input('id_wardrobe'));
-        // $jenisPaket = JenisPaket::find($request->input('id_jenis_paket'));
-
-        // Pastikan semua relasi ditemukan
-        if (
-            !$album || !$makeup || !$catering || !$hiburan ||
-            !$tenda || !$dekorasi || !$wardrobe
-        ) {
-            return back()->with('error', 'Ada komponen paket yang tidak ditemukan.');
+        if (Auth::user()->role === 'CLIENT') {
+            abort(403, 'Akses Ditolak. Anda bukan Admin.');
         }
 
-        $totalHarga =
-            $album->harga +
-            $makeup->harga +
-            $catering->harga +
-            $hiburan->harga +
-            $tenda->harga_tenda +
-            $dekorasi->harga +
-            $wardrobe->harga ;
-            // $jenisPaket->harga;
+        // Karena Frontend Javascript sudah menghitung total harga dengan akurat,
+        // kita tidak perlu melakukan query Find() ke 7 tabel berbeda untuk menjumlahkannya lagi.
+        // Kita cukup menyimpan apa yang dikirimkan oleh form Modal.
 
         $data = [
-            'id_client' => $request->input('id_client'),
-            'jenis_paket' => $request->input('id_jenis_paket'),
-            'id_album' => $request->input('id_album'),
-            'id_makeup' => $request->input('id_makeup'),
+            // Perbaiki penangkapan name 'jenis_paket' agar tidak error Null
+            'jenis_paket' => $request->input('jenis_paket'),
+
+            'id_album'    => $request->input('id_album'),
+            'id_makeup'   => $request->input('id_makeup'),
             'id_catering' => $request->input('id_catering'),
-            'id_hiburan' => $request->input('id_hiburan'),
-            'id_tenda' => $request->input('id_tenda'),
+            'id_hiburan'  => $request->input('id_hiburan'),
+            'id_tenda'    => $request->input('id_tenda'),
             'id_dekorasi' => $request->input('id_dekorasi'),
             'id_wardrobe' => $request->input('id_wardrobe'),
-            'id_user' => Auth::id(),
-            'total_harga' => $totalHarga,
+
+            'total_harga' => $request->input('total_harga'), // Nilai ini dikirim dari Javascript Modal
+            'id_user'     => Auth::id(), // Opsional: mencatat siapa admin yang terakhir mengedit
         ];
 
         $datas = Paket::findOrFail($id);
         $datas->update($data);
 
-        return back()->with('message_delete', 'Data Paket Sudah Di Update');
+        // Ubah session key menjadi 'success' agar cocok dengan Alert Notifikasi Tailwind kita
+        return back()->with('success', 'Data Paket Berhasil Diperbarui!');
     }
 
 
@@ -177,6 +169,10 @@ class PaketController extends Controller
      */
     public function destroy(string $id)
     {
+        if (Auth::user()->role === 'CLIENT') {
+            abort(403, 'Akses Ditolak. Anda bukan Admin.');
+        }
+
         $data = Paket::findOrFail($id);
         $data->delete();
         return back()->with('message_delete', 'Data Paket Sudah di Hapus');

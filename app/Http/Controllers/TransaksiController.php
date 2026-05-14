@@ -20,14 +20,26 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $transaksi = Transaksi::paginate(10);
+        $userLogin = Auth::user();
+
+        // LOGIKA PEMBATASAN BERDASARKAN ROLE
+        if ($userLogin->role === 'ADMIN' || $userLogin->role === 'OWNER') {
+            // Jika Admin/Owner: Tarik SEMUA data transaksi
+            $transaksi = Transaksi::latest()->paginate(10);
+        } else {
+            // Jika Client: Tarik data transaksi yang id_user-nya cocok dengan ID dia sendiri
+            $transaksi = Transaksi::where('id_user', $userLogin->id)->latest()->paginate(10);
+        }
+
         $paket = Paket::all();
-        $user = User::all();
+        // Mengubah nama variabel dari $user menjadi $users agar tidak bentrok dengan $userLogin
+        $users = User::all();
         $client = Client::all();
+
         return View('page.transaksi.index')->with([
             'transaksi' => $transaksi,
             'paket' => $paket,
-            'user' => $user,
+            'user' => $users,
             'client' => $client,
         ]);
     }
@@ -41,6 +53,7 @@ class TransaksiController extends Controller
         $user = User::all();
         $client = Client::all();
         $kode_invoice = Transaksi::createCode();
+
         return view('page.transaksi.create', compact('kode_invoice'))->with([
             'user' => $user,
             'paket' => $paket,
@@ -53,18 +66,34 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        Transaksi::create([
-            'kode_invoice' => $request->kode_invoice,
-            'id_client' => $request->id_client,
-            'tanggal' => $request->tanggal,
-            'tanggal_acara' => $request->tanggal_acara,
-            'id_paket' => $request->id_paket,
-            'total_bayar' => $request->total_bayar,
-            'id_user' => Auth::id(),
+        // 1. TAMBAHKAN VALIDASI UNTUK MENCEGAH ERROR SQL
+        // Sistem akan mengecek apakah id_client dan id_paket terisi. 
+        // Jika kosong, sistem akan otomatis mengembalikan user ke halaman form dengan pesan error.
+        $request->validate([
+            'kode_invoice'  => 'required',
+            'id_client'     => 'required',
+            'id_paket'      => 'required',
+            'tanggal'       => 'required|date',
+            'tanggal_acara' => 'required|date',
+            'total_bayar'   => 'required|numeric',
+        ], [
+            // Pesan error khusus agar mudah dipahami
+            'id_client.required' => 'Gagal menyimpan! Data Klien tidak boleh kosong. Jika Anda Klien, pastikan Admin telah mendaftarkan profil Anda.',
+            'id_paket.required'  => 'Gagal menyimpan! Anda harus memilih Paket Layanan.',
         ]);
 
+        // 2. SIMPAN DATA JIKA VALIDASI LOLOS
+        Transaksi::create([
+            'kode_invoice'  => $request->kode_invoice,
+            'id_client'     => $request->id_client,
+            'tanggal'       => $request->tanggal,
+            'tanggal_acara' => $request->tanggal_acara,
+            'id_paket'      => $request->id_paket,
+            'total_bayar'   => $request->total_bayar,
+            'id_user'       => Auth::id(),
+        ]);3
 
-        return redirect()->route('transaksi.index')->with('success', 'Data Berhasil Ditambahkan');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi / Booking Berhasil Ditambahkan!');
     }
 
     /**
@@ -91,26 +120,16 @@ class TransaksiController extends Controller
         $data = [
             'pembayaran' => $request->input('pembayaran'),
             'status' => $request->input('status'),
-            'id_user' => Auth::id(),
+            // PENTING: 'id_user' Dihapus dari sini!
+            // Jika admin update status, kita tidak boleh mengubah id_user menjadi ID admin.
+            // Biarkan id_user tetap milik client yang pertama kali booking.
         ];
 
         $datas  = Transaksi::findOrFail($id);
         $datas->update($data);
 
-        return back()->with('message_delete', 'Data Transksi Sudah Di Update');
-
-
-        // $transaksi = Transaksi::findOrFail($id);
-
-        // // Update status pembayaran
-        // $transaksi->update([
-        //     'pembayaran' => $request->pembayaran,
-        //     'status' => $request->status,
-        // ]);
-
-        // // Redirect dengan pesan sukses
-        // return redirect()->route('transaksi.index')
-        //     ->with('success', 'Status pembayaran berhasil diubah!');
+        // Mengubah key menjadi 'success' agar cocok dengan flash message di UI Tailwind yang kita buat
+        return redirect()->route('transaksi.index')->with('success', 'Status Transaksi berhasil di-update!');
     }
 
     /**
@@ -120,6 +139,12 @@ class TransaksiController extends Controller
     {
         $data = Transaksi::findOrFail($id);
         $data->delete();
-        return back()->with('message_delete','Data paket Sudah dihapus');
+
+        // PENTING: Karena frontend memanggil delete menggunakan Axios (Javascript),
+        // Kita harus mengembalikan response dalam bentuk JSON, bukan redirect back().
+        return response()->json([
+            'success' => true,
+            'message' => 'Data transaksi berhasil dihapus'
+        ]);
     }
 }

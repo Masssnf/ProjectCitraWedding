@@ -1,76 +1,91 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Update User') }}
+        <h2 class="font-medium text-xl text-gray-800 tracking-widest uppercase leading-tight">
+            {{ __('Edit Data User') }}
         </h2>
     </x-slot>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-sm">
-                <div class="mx-auto py-4 px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
-                    <form method="POST" action="{{ route('users.update', $user->id) }}">
+
+    <div class="py-12 bg-gray-50 min-h-screen">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-8 sm:p-10">
+                    
+                    <div class="mb-8 border-b border-gray-50 pb-5">
+                        <h3 class="text-lg font-medium text-gray-800 tracking-wide">Informasi Akun</h3>
+                        <p class="text-sm text-gray-400 font-light mt-1">Perbarui detail profil, email, dan hak akses pengguna di sistem.</p>
+                    </div>
+
+                    <form method="POST" action="{{ route('users.update', $user->id) }}" class="space-y-6">
                         @csrf
                         @method('PUT')
-                        <!-- Name -->
+                        
                         <div>
-                            <x-input-label for="name" :value="__('Name')" />
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
+                            <x-input-label for="name" value="Nama Lengkap" class="text-gray-600 mb-1.5" />
+                            <x-text-input id="name" type="text" name="name"
+                                class="block w-full border-gray-200 rounded-xl shadow-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 text-sm transition-colors"
                                 :value="$user->name ?? old('name')" required autofocus autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
-                        <!-- Email Address -->
-                        <div class="mt-4">
-                            <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
+                        <div>
+                            <x-input-label for="email" value="Alamat Email" class="text-gray-600 mb-1.5" />
+                            <x-text-input id="email" type="email" name="email"
+                                class="block w-full border-gray-200 rounded-xl shadow-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 text-sm transition-colors"
                                 :value="$user->email ?? old('email')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
-                        <!-- Password -->
-                        <div class="mt-4">
-                            <x-input-label for="password" :value="__('Password')" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <x-input-label for="password" value="Password Baru" class="text-gray-600" />
+                                    <span class="text-xs text-gray-400 font-light">Kosongkan jika tidak diubah</span>
+                                </div>
+                                <x-text-input id="password" type="password" name="password"
+                                    class="block w-full border-gray-200 rounded-xl shadow-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 text-sm transition-colors"
+                                    autocomplete="new-password" placeholder="••••••••" />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            </div>
 
-                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
-                                autocomplete="new-password" />
-
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            <div>
+                                <x-input-label for="password_confirmation" value="Konfirmasi Password Baru" class="text-gray-600 mb-1.5" />
+                                <x-text-input id="password_confirmation" type="password" name="password_confirmation"
+                                    class="block w-full border-gray-200 rounded-xl shadow-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 text-sm transition-colors"
+                                    autocomplete="new-password" placeholder="••••••••" />
+                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                            </div>
                         </div>
 
-                        <!-- Confirm Password -->
-                        <div class="mt-4">
-                            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                                name="password_confirmation" autocomplete="new-password" />
-
-                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                        </div>
-
-                        <!-- Role Selection -->
-                        <div class="mt-4">
-                            <x-input-label for="role" :value="__('Role')" />
-                            <select id="role" name="role"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
-                                <option value="OWNER" {{ $user->role == 'OWNER' ? 'selected' : '' }}>OWNER</option>
-                                <option value="ADMIN" {{ $user->role == 'ADMIN' ? 'selected' : '' }}>ADMIN</option>
-                                <option value="CLIENT" {{ $user->role == 'CLIENT' ? 'selected' : '' }}>CLIENT
-                                </option>
-                            </select>
+                        <div class="pt-2">
+                            <x-input-label for="role" value="Hak Akses (Role)" class="text-gray-600 mb-1.5" />
+                            <div class="relative">
+                                <select id="role" name="role"
+                                    class="block w-full border-gray-200 rounded-xl shadow-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 text-sm transition-colors appearance-none bg-white">
+                                    <option value="OWNER" {{ $user->role == 'OWNER' ? 'selected' : '' }}>OWNER</option>
+                                    <option value="ADMIN" {{ $user->role == 'ADMIN' ? 'selected' : '' }}>ADMIN</option>
+                                    <option value="CLIENT" {{ $user->role == 'CLIENT' ? 'selected' : '' }}>CLIENT</option>
+                                </select>
+                            </div>
                             <x-input-error :messages="$errors->get('role')" class="mt-2" />
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <x-danger-link-button class="ms-4" :href="route('users.index')">
-                                {{ __('Back') }}
-                            </x-danger-link-button>
-                            <x-primary-button class="ms-4">
-                                {{ __('Save') }}
-                            </x-primary-button>
+                        <div class="flex items-center justify-end gap-3 pt-8 mt-6 border-t border-gray-50">
+                            <a href="{{ route('users.index') }}"
+                                class="inline-flex items-center px-6 py-2.5 bg-white border border-gray-200 rounded-full font-medium text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors tracking-wide">
+                                {{ __('Batal') }}
+                            </a>
+                            
+                            <button type="submit"
+                                class="inline-flex items-center px-8 py-2.5 bg-zinc-900 border border-transparent rounded-full font-medium text-sm text-white hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-900 transition-colors tracking-wide">
+                                {{ __('Simpan Perubahan') }}
+                            </button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
+            
         </div>
     </div>
 </x-app-layout>

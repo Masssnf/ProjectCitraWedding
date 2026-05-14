@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('type_dekorasi');
             $table->string('deskripsi');
             $table->integer('harga');
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }

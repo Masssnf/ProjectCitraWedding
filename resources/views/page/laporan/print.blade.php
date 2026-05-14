@@ -1,252 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Events</title>
+    <title>Laporan Transaksi - Citra Wedding Organizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #FAFAFA;
-            font: 12pt "Tahoma";
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-        }
-
-        * {
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
-
-        .subpage {
-            padding: 1cm;
-            border: 5px red solid;
-            height: 257mm;
-            outline: 2cm #FFEAEA solid;
-        }
-
-        td {
-            padding-top: 5px;
-        }
-
-        .kp {
-            text-align: center;
-        }
-
-        .left {
-            text-align: left;
-        }
-
-        .logo {
-            text-align: center;
-            font-size: small;
-        }
-
-        .text {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .cntr {
-            font-size: small;
-            text-align: left;
-            margin-left: 40px;
-            margin-right: 40px;
-        }
-
-        .translation {
-            display: block;
-            font-size: small;
-            margin-top: -9px;
-            font-style: italic;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin-left: 40px;
-            margin-right: 40px;
-            margin-top: 40px;
-            width: 100%; /* Ensure table takes full width */
-        }
-
-        .ini {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-            font-size: small;
-            padding: 0;
-        }
-
-        .ttd {
-            text-align: left;
-            font-size: small;
-            padding: 0px;
-            margin-top: -10px;
-            font-style: italic;
-        }
-
-        .ttd1 {
-            text-align: left;
-            font-size: small;
-            padding: 0px;
-        }
-
-        .left {
-            padding-left: 10px;
-        }
-
-        .footer {
-            background: #204b8c;
-            color: #fff;
-            text-align: center;
-            font-size: small;
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
-
-        .ket {
-            margin-left: 290px;
-        }
-
-        body {
-            font-family: 'Tahoma';
-        }
-
-        .tengah {
-            text-align: center;
-        }
-
-        .page {
-            width: 297mm; /* Adjusted for A4 landscape width */
-            min-height: 210mm; /* Adjusted for A4 landscape height */
-            padding: 0mm;
-            margin: 0mm auto;
-            border: 1px #D3D3D3 solid;
-            border-radius: 5px;
-            background: white;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .page::before {
-            content: "";
-            top: 0;
-            left: 0;
-            width: 189px;
-            height: 189px;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        .page::after {
-            content: "";
-            bottom: 0;
-            right: 0;
-            width: 794px;
-            height: 49px;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
+        /* Pengaturan Dasar Kertas A4 Landscape */
         @page {
-            size: A4 landscape; /* Change to landscape */
-            margin: 0;
+            size: A4 landscape;
+            margin: 15mm;
         }
 
+        body {
+            background-color: #f3f4f6;
+            /* Warna latar saat dilihat di browser */
+            font-family: 'Inter', 'Tahoma', sans-serif;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color: #1f2937;
+        }
+
+        /* Container Kertas (Tampilan Browser) */
+        .page-container {
+            width: 297mm;
+            min-height: 210mm;
+            background: white;
+            margin: 20px auto;
+            padding: 20mm;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Pengaturan Khusus Saat Dicetak (Print) */
         @media print {
-            html,
             body {
-                width: 297mm; /* Adjusted for A4 landscape width */
-                height: 210mm; /* Adjusted for A4 landscape height */
+                background-color: white;
             }
 
-            .page {
-                padding: 0mm;
-                margin: 0mm auto;
-                border: 1 px #D3D3D3 solid;
-                border-radius: 5px;
-                background: white;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                position: relative;
+            .page-container {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                width: 100%;
             }
 
-            .page::before {
-                content: "";
-                top: 0;
-                left: 0;
-                width: 189px;
-                height: 189px;
-                background-size: cover;
-                background-repeat: no-repeat;
+            /* Mencegah tabel terpotong di tengah baris jika berlanjut ke halaman 2 */
+            tr {
+                page-break-inside: avoid;
             }
+        }
 
-            .page::after {
-                content: "";
-                bottom: 0;
-                right: 0;
-                width: 794px;
-                height: 49px;
-                background-size: cover;
-                background-repeat: no-repeat;
-            }
+        /* Kustomisasi Tabel Cetak */
+        .print-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 11pt;
+        }
+
+        .print-table th,
+        .print-table td {
+            border: 1px solid #d1d5db;
+            padding: 8px 10px;
+            vertical-align: top;
+        }
+
+        .print-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 9pt;
+            letter-spacing: 0.05em;
+            text-align: center;
+            color: #4b5563;
+        }
+
+        .print-table td {
+            color: #374151;
+        }
+
+        /* Utilitas Garis Kop Surat */
+        .kop-line {
+            border-top: 3px solid #111827;
+            border-bottom: 1px solid #111827;
+            padding-bottom: 2px;
+            margin-top: 15px;
+            margin-bottom: 20px;
         }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
+    <div class="page-container">
 
-    <div class="book">
-        <div class="page" id="result">
-            <div class="ml-[6px] mr-[90px]">
-                <table class="border border-1 border-black w-full">
-                    <thead>
-                        <tr>
-                            <th class="border border-1 border-black">NO</th>
-                            <th class="border border-1 border-black">TANGGAL BOOKING</th>
-                            <th class="border border-1 border-black">KODE INVOICE</th>
-                            <th class="border border-1 border-black">CLIENT</th>
-                            <th class="border border-1 border-black">KODE PAKET</th>
-                            <th class="border border-1 border-black">DETAIL PAKET</th>
-                            <th class="border border-1 border-black">LOKASI</th>
-                            <th class="border border-1 border-black">TANGGAL ACARA</th>
-                            <th class="border border-1 border-black">STATUS</th>
-                            <th class="border border-1 border-black">TOTAL HARGA</th>
-                    </thead>
-                    <tbody>
-                        @php
-                            $no = 1;
-                        @endphp
-                        @foreach ($data as $d)
-                            <tr>
-                                <td class="border border-1 border-black tengah">{{ $no++ }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->tanggal }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->kode_invoice }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->client->namapl }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->paket->kode_paket }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->paket->jenis_paket }}, {{ $d->paket->makeup->type_makeup}}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->client->alamat }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->tanggal_acara }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">{{ $d->status }}</td>
-                                <td class="border border-1 border-black pl-2 tengah">Rp {{ number_format($d->total_bayar,2)}}</td>
-                                
-                                {{-- <td class="border border-1 border-black pl-2">{{ $d->user->name }}</td> --}}
-                            </tr> 
-                        @endforeach
-                    </tbody>
-                </table>
+        <div class="text-center">
+            <h1 class="text-2xl font-bold tracking-widest uppercase text-gray-900">Citra Wedding Organizer</h1>
+            <p class="text-sm text-gray-600 mt-1">Jl. Contoh Alamat Bisnis No. 123, Kota Bandung, Jawa Barat</p>
+            <p class="text-sm text-gray-600">Telepon: 0812-3456-7890 | Email: info@citrawedding.com</p>
+        </div>
+        <div class="kop-line"></div>
+
+        <div class="text-center mb-6">
+            <h2 class="text-lg font-semibold uppercase underline decoration-gray-400 underline-offset-4">Laporan
+                Transaksi & Booking</h2>
+            <p class="text-xs text-gray-500 mt-2">Dicetak pada:
+                {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y - H:i') }} WIB</p>
+        </div>
+
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <th style="width: 4%;">NO</th>
+                    <th style="width: 10%;">TGL BOOKING</th>
+                    <th style="width: 12%;">INVOICE</th>
+                    <th style="width: 15%;">NAMA KLIEN</th>
+                    <th style="width: 12%;">PAKET</th>
+                    <th style="width: 15%;">DETAIL UTAMA</th>
+                    <th style="width: 10%;">TGL ACARA</th>
+                    <th style="width: 10%;">STATUS</th>
+                    <th style="width: 12%;">TOTAL (Rp)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($data as $index => $d)
+                    <tr>
+                        <td class="text-center">{{ $index + 1 }}</td>
+                        <td class="text-center">{{ \Carbon\Carbon::parse($d->tanggal)->format('d/m/Y') }}</td>
+                        <td class="text-center font-mono text-xs">{{ $d->kode_invoice }}</td>
+                        <td>
+                            <div class="font-medium">{{ optional($d->client)->namapl }}</div>
+                            <div class="text-xs text-gray-500">& {{ optional($d->client)->namapr }}</div>
+                        </td>
+                        <td class="text-center">
+                            {{ optional($d->paket)->kode_paket }}<br>
+                            <span class="text-xs text-gray-500">{{ optional($d->paket)->jenis_paket }}</span>
+                        </td>
+                        <td class="text-xs">
+                            - Makeup: {{ optional(optional($d->paket)->makeup)->type_makeup ?? '-' }}<br>
+                            - Dekor: {{ optional(optional($d->paket)->dekorasi)->type_dekorasi ?? '-' }}
+                        </td>
+                        <td class="text-center">{{ \Carbon\Carbon::parse($d->tanggal_acara)->format('d/m/Y') }}</td>
+                        <td class="text-center">
+                            @if (\Carbon\Carbon::parse($d->tanggal_acara)->isPast())
+                                Selesai
+                            @else
+                                {{ $d->status }}
+                            @endif
+                        </td>
+                        <td class="text-right font-medium">
+                            {{ number_format($d->total_bayar, 0, ',', '.') }}
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="9" class="text-center py-6 text-gray-500 italic">
+                            Tidak ada data transaksi pada periode yang dipilih.
+                        </td>
+                    </tr>
+                @endforelse
+
+                @if(count($data) > 0)
+                    <tr>
+                        <td colspan="8" class="text-right font-bold uppercase text-xs" style="background-color: #f8fafc;">
+                            Total Pendapatan Keseluruhan:
+                        </td>
+                        <td class="text-right font-bold" style="background-color: #f8fafc;">
+                            {{ number_format($data->sum('total_bayar'), 0, ',', '.') }}
+                        </td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+
+        <div class="mt-12 flex justify-end pr-8">
+            <div class="text-center">
+                <p class="text-sm mb-16">Bandung, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>Mengetahui,
+                </p>
+                <p class="text-sm font-bold underline decoration-gray-400 underline-offset-4">Owner Citra Wedding</p>
+                <p class="text-xs text-gray-500 mt-1">Pimpinan / Manajemen</p>
             </div>
         </div>
+
     </div>
+
+    <script>
+        // Otomatis membuka dialog print saat halaman selesai dimuat
+        window.onload = function () {
+            window.print();
+        };
+    </script>
 </body>
 
 </html>
-<script>
-    // window.print();
-</script>

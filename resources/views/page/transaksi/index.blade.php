@@ -1,274 +1,344 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-900 leading-tight">
-            {{ __('BOOKING') }}
+        <h2 class="font-medium text-xl text-gray-800 tracking-widest uppercase leading-tight">
+            {{ __('Daftar Transaksi / Booking') }}
         </h2>
     </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="p-4 bg-gray-100 rounded-xl mb-2 font-bold flex items-center justify-between ">
-                        <div>DATA BOOOKING</div>
-                        <div>
-                            <a href="{{ route('transaksi.create') }}" onclick="return functionAdd()"
-                                class="bg-amber-400 p-3 w-10 h-10 rounded-xl text-white hover:bg-amber-500 justify-between">
-                                <i class="fi fi-sr-square-plus p-"></i></a>
-                        </div>
-                    </div>
-                    <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400">
-                            <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr class="text-center font-semibold">
-                                    <th scope="col" class="px-4 py-3">
-                                        NO
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        KODE INVOICE
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        CLIENT
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        KODE PAKET
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        JENIS PAKET
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        TANGGAL BOOKING
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        TANGGAL ACARA
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        STATUS
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        DIBAYAR
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        TOTAL BAYAR
-                                    </th>
-                                    @can('role=OWNER')
-                                        <th scope="col" class="px-4 py-3">
-                                            ACTION
-                                        </th>
-                                    @endcan
-                                </tr>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $no = 1;
-                                @endphp
-                                @foreach ($transaksi as $key => $t)
-                                    <tr
-                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <th scope="row"
-                                            class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $transaksi->perPage() * ($transaksi->currentPage() - 1) + $key + 1 }}
-                                        </th>
-                                        <td class="px-4 py-2">
-                                            {{ $t->kode_invoice }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $t->client->namapl }} - {{ $t->client->namapr}}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $t->paket->kode_paket }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $t->paket->jenis_paket }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $t->tanggal }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $t->tanggal_acara }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            @if (Carbon\Carbon::parse($t->tanggal_acara)->isPast())
-                                                Selesai
-                                            @else
-                                                {{ $t->status }}
-                                            @endif
-                                        </td>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                                        <td class="px-4 py-2">
-                                            {{ $t->pembayaran }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            Rp {{ number_format($t->total_bayar, 0, ',', '.') }}
-                                        </td>
-                                        @can('role=OWNER')
-                                            <td class="px-4 py-2">
-                                                <button type="button" onclick="editSourceModal(this)"
-                                                    data-id="{{ $t->id }}" data-modal-target="sourceModal"
-                                                    data-tanggal_acara="{{ $t->tanggal_acara }}"
-                                                    data-pembayaran="{{ $t->pembayaran }}"
-                                                    data-status="{{ $t->status }}"
-                                                    class="bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-md text-xs text-white">
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onclick="return transaksiDelete('{{ $t->id }}','{{ $t->client->namapl }}')"
-                                                    class="bg-red-500 hover:bg-bg-red-300 px-3 py-1 rounded-md text-xs text-white">Delete</button>
-                                            </td>
-                                        @endcan
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+    <div class="py-12 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            @if(session('success'))
+                <div id="alert-success"
+                    class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl shadow-sm flex items-center justify-between animate-fade-in-down mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-emerald-100 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <span class="font-medium text-sm tracking-wide">{{ session('success') }}</span>
                     </div>
+                    <button onclick="document.getElementById('alert-success').style.display='none'"
+                        class="text-emerald-500 hover:text-emerald-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            @endif
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-50 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-800 tracking-wide">
+                            @if(Auth::user()->role === 'CLIENT')
+                                Riwayat Pesanan Saya
+                            @else
+                                Seluruh Data Booking
+                            @endif
+                        </h3>
+                        <p class="text-xs text-gray-400 font-light mt-1">Pantau jadwal acara dan status pembayaran.</p>
+                    </div>
+
+                    <div>
+                        <a href="{{ route('transaksi.create') }}"
+                            class="inline-flex items-center justify-center px-6 py-2.5 font-medium tracking-wide text-white bg-zinc-900 rounded-full hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 transition-all duration-200 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            Buat Transaksi Baru
+                        </a>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-gray-600 text-sm">
+                        <thead class="text-xs text-gray-400 uppercase tracking-wider bg-slate-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 font-medium text-center">No</th>
+                                <th scope="col" class="px-6 py-4 font-medium">Invoice & Klien</th>
+                                <th scope="col" class="px-6 py-4 font-medium">Paket & Tanggal</th>
+                                <th scope="col" class="px-6 py-4 font-medium text-center">Status Transaksi</th>
+
+                                @if(Auth::user()->role === 'ADMIN' || Auth::user()->role === 'OWNER')
+                                    <th scope="col" class="px-6 py-4 font-medium text-center">Aksi</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            @forelse ($transaksi as $key => $t)
+                                <tr class="bg-white hover:bg-slate-50/50 transition-colors duration-200">
+                                    <td class="px-6 py-5 whitespace-nowrap text-center text-gray-400 font-light align-top">
+                                        {{ $transaksi->perPage() * ($transaksi->currentPage() - 1) + $key + 1 }}
+                                    </td>
+
+                                    <td class="px-6 py-5 align-top">
+                                        <div
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-600 tracking-wider font-mono mb-2">
+                                            #{{ $t->kode_invoice }}
+                                        </div>
+                                        <div class="font-medium text-gray-800">{{ optional($t->client)->namapl }} &
+                                            {{ optional($t->client)->namapr }}</div>
+                                    </td>
+
+                                    <td class="px-6 py-5 align-top">
+                                        <div class="font-medium text-indigo-600 mb-1">{{ optional($t->paket)->jenis_paket }}
+                                            ({{ optional($t->paket)->kode_paket }})</div>
+                                        <div class="text-xs text-gray-500 mb-0.5"><span class="font-medium">Booking:</span>
+                                            {{ \Carbon\Carbon::parse($t->tanggal)->format('d M Y') }}</div>
+                                        <div class="text-xs text-gray-500"><span class="font-medium">Acara:</span>
+                                            {{ \Carbon\Carbon::parse($t->tanggal_acara)->format('d M Y') }}</div>
+                                    </td>
+
+                                    <td class="px-6 py-5 align-top text-center">
+                                        @if (\Carbon\Carbon::parse($t->tanggal_acara)->isPast())
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 mb-2 w-full justify-center">Selesai
+                                                Dikerjakan</span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 mb-2 w-full justify-center">{{ $t->status }}</span>
+                                        @endif
+
+                                        @if($t->pembayaran == 'Lunas')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 w-full justify-center border border-emerald-100"><i
+                                                    class="fi fi-sr-check-circle mr-1 text-[10px]"></i> Lunas</span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 w-full justify-center border border-amber-100"><i
+                                                    class="fi fi-sr-time-fast mr-1 text-[10px]"></i> {{ $t->pembayaran }}</span>
+                                        @endif
+
+                                        <div class="mt-2 text-sm font-bold text-gray-800">Rp
+                                            {{ number_format($t->total_bayar, 0, ',', '.') }}</div>
+                                    </td>
+
+                                    @if(Auth::user()->role === 'ADMIN' || Auth::user()->role === 'OWNER')
+                                        <td class="px-6 py-5 align-top text-center border-l border-gray-50">
+                                            <div class="flex flex-col items-center justify-center gap-2">
+                                                <button type="button"
+                                                    class="w-full inline-flex items-center justify-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                                                    onclick="editSourceModal(this)" data-modal-target="sourceModal"
+                                                    data-id="{{ $t->id }}" data-invoice="{{ $t->kode_invoice }}"
+                                                    data-pembayaran="{{ $t->pembayaran }}" data-status="{{ $t->status }}">
+                                                    Update Status
+                                                </button>
+
+                                                <button type="button"
+                                                    class="w-full inline-flex items-center justify-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                                                    onclick="transaksiDelete('{{ $t->id }}', '{{ addslashes(optional($t->client)->namapl) }}')">
+                                                    Batalkan
+                                                </button>
+                                            </div>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <p class="text-gray-400 font-light">Belum ada riwayat transaksi yang ditemukan.
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 border-t border-gray-50">
                     {{ $transaksi->links() }}
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="fixed inset-0 flex items-center justify-center z-50 hidden" id="sourceModal">
-        <div class="fixed inset-0 bg-black opacity-50"></div>
-        <div class="fixed inset-0 flex items-center justify-center">
-            <div class="w-full md:w-1/2 relative bg-white rounded-lg shadow mx-5">
-                <div class="flex items-start justify-between p-4 border-b rounded-t">
-                    <h3 class="text-xl font-semibold text-gray-900" id="title_source">
-                        Update Sumber Database
+
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-300"
+        id="sourceModal">
+        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="sourceModalClose()"></div>
+
+        <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl mx-4 transform transition-all">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 tracking-wide" id="title_source">Update Status Pesanan
                     </h3>
-                    <button type="button" onclick="sourceModalClose(this)" data-modal-target="sourceModal"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
-                        data-modal-hide="defaultModal">
-                        <i class="fa-solid fa-xmark"></i>
+                    <p class="text-xs text-gray-400 mt-0.5" id="subtitle_source">Ubah status pengerjaan atau pembayaran.
+                    </p>
+                </div>
+                <button type="button" onclick="sourceModalClose()"
+                    class="text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form method="POST" id="formSourceModal">
+                @csrf
+                <div class="px-6 py-5 space-y-4">
+                    <div>
+                        <x-input-label for="status" value="Status Pengerjaan Acara"
+                            class="text-gray-600 mb-1.5 text-xs" />
+                        <select name="status" id="status"
+                            class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20 text-gray-700">
+                            <option value="">Pilih Status...</option>
+                            <option value="Baru Booking">Baru Booking</option>
+                            <option value="Persiapan">Persiapan / Fitting</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Dibatalkan">Dibatalkan</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <x-input-label for="pembayaran" value="Status Pembayaran (Keuangan)"
+                            class="text-gray-600 mb-1.5 text-xs" />
+                        <select name="pembayaran" id="pembayaran"
+                            class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20 text-gray-700">
+                            <option value="">Pilih Status Pembayaran...</option>
+                            <option value="Dana Pertama">DP (Dana Pertama)</option>
+                            <option value="Termin 2">Termin 2</option>
+                            <option value="Lunas">Lunas</option>
+                        </select>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center justify-end px-6 py-4 bg-gray-50 rounded-b-2xl gap-3 border-t border-gray-100">
+                    <button type="button" onclick="sourceModalClose()"
+                        class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors tracking-wide">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-5 py-2 text-sm font-medium text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-colors tracking-wide">
+                        Simpan Status
                     </button>
                 </div>
-                <form method="POST" id="formSourceModal">
-                    @csrf
-                    <div class="flex flex-col  p-4 space-y-6">
-                        <div class="mb-5">
-                            <label for="pembayaran"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
-                                Pembayaran</label>
-                            {{-- <select class="js-example-placeholder-single js-states form-control w-full m-6"
-                                id="pembayaran" name="pembayaran" data-placeholder="Pilih Status">
-                                <option value="">Pilih...</option>
-                                <option value="Dana Pertama">Dana Pertama</option>
-                                <option value="Lunas">Lunas</option>
-                            </select> --}}
-                            <select
-                                class="appearance-none border border-gray-300 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                                id="pembayaran" name="pembayaran" data-placeholder="Pilih Status Pembayaran">
-                                <option value="">Pilih Status Pembayaran...</option>
-                                <option value="Dana Pertama"> Dana Pertama</option>
-                                <option value="Lunas">Lunas</option>
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label for="status"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
-                                Booking</label>
-                            <select
-                                class="appearance-none border border-gray-300 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                                id="status" name="status" data-placeholder="Pilih Status">
-                                <option value="">Pilih...</option>
-                                <option value="Baru Booking">Baru Booking</option>
-                                <option value="Selesai">Selesai</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="submit" id="formSourceButton"
-                            class="bg-green-400 m-2 w-40 h-10 rounded-xl hover:bg-green-500">Simpan</button>
-                        <button type="button" data-modal-target="sourceModal" onclick="sourceModalClose(this)"
-                            class="bg-red-500 m-2 w-40 h-10 rounded-xl text-white hover:shadow-lg hover:bg-red-600">Batal</button>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </x-app-layout>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <script>
+    // FUNGSI MEMBUKA MODAL EDIT STATUS
     const editSourceModal = (button) => {
-        // const formModal = document.getElementById('formSourceModal');
-        // const modalTarget = button.dataset.modalTarget;
+        const formModal = document.getElementById('formSourceModal');
+
         const id = button.dataset.id;
+        const invoice = button.dataset.invoice;
         const pembayaran = button.dataset.pembayaran;
         const status = button.dataset.status;
 
+        // Ubah teks judul modal agar informatif
+        document.getElementById('subtitle_source').innerText = `Invoice: #${invoice}`;
+
+        // Set value combobox
         document.getElementById('pembayaran').value = pembayaran;
         document.getElementById('status').value = status;
 
-        const form = document.getElementById('formSourceModal');
-        form.action = `/transaksi/${id}`; // Pastikan ini sesuai route Anda
-        form.method = 'POST';
+        // Atur URL Form Action
+        formModal.action = `/transaksi/${id}`;
+        formModal.method = 'POST';
 
-        // Tambah input hidden _method = PUT untuk update
-        if (!form.querySelector('input[name="_method"]')) {
+        // Sisipkan _method PUT
+        if (!formModal.querySelector('input[name="_method"]')) {
             const methodInput = document.createElement('input');
             methodInput.type = 'hidden';
             methodInput.name = '_method';
             methodInput.value = 'PUT';
-            form.appendChild(methodInput);
+            formModal.appendChild(methodInput);
         }
 
-        // Tampilkan modal
         document.getElementById('sourceModal').classList.remove('hidden');
-
-        // let url = "{{ route('transaksi.update', ':id') }}".replace(':id', id);
-
-        // let status = document.getElementById(modalTarget);
-
-        // // Set nilai untuk combobox
-        // const pembayaranSelect = document.getElementById('pembayaran');
-        // pembayaranSelect.value = pembayaran;
-
-        // // Jika menggunakan Select2 atau plugin serupa, trigger event change
-        // $(pembayaranSelect).trigger('change');
-
-        // document.getElementById('formSourceButton').innerText = 'Simpan';
-        // document.getElementById('formSourceModal').setAttribute('action', url);
-
-        // let csrfToken = document.createElement('input');
-        // csrfToken.setAttribute('type', 'hidden');
-        // csrfToken.setAttribute('name', '_token');
-        // csrfToken.setAttribute('value', '{{ csrf_token() }}');
-        // formModal.appendChild(csrfToken);
-
-        // let methodInput = document.createElement('input');
-        // methodInput.setAttribute('type', 'hidden');
-        // methodInput.setAttribute('name', '_method');
-        // methodInput.setAttribute('value', 'PATCH');
-        // formModal.appendChild(methodInput);
-
-        // status.classList.toggle('hidden');
     }
 
-    const sourceModalClose = (button) => {
-        const modalTarget = button.dataset.modalTarget;
-        let status = document.getElementById(modalTarget);
-        status.classList.toggle('hidden');
+    // FUNGSI MENUTUP MODAL
+    const sourceModalClose = () => {
+        document.getElementById('sourceModal').classList.add('hidden');
     }
 
-    const transaksiDelete = async (id,client ) => {
-        let tanya = confirm(`Apakah anda yakin untuk menghapus transaksi ${client}?`);
-        if (tanya) {
-            try {
-                const response = await axios.post(`/transaksi/${id}`, {
-                    '_method': 'DELETE',
-                    '_token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    // FUNGSI HAPUS TRANSAKSI
+    const transaksiDelete = (id, clientName) => {
+        Swal.fire({
+            title: 'Batalkan Transaksi?',
+            text: `Data booking atas nama ${clientName} akan dihapus dari sistem.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#f1f5f9',
+            confirmButtonText: 'Ya, Batalkan!',
+            cancelButtonText: '<span class="text-slate-700">Tutup</span>',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-2xl',
+                confirmButton: 'rounded-full px-6 py-2.5 text-sm font-medium tracking-wide',
+                cancelButton: 'rounded-full px-6 py-2.5 text-sm font-medium tracking-wide border-none shadow-none',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Memproses...',
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
                 });
 
-                if (response.status === 200) {
-                    alert('Transaksi berhasil dihapus');
-                    location.reload();
-                } else {
-                    alert('Gagal menghapus transaksi. Silakan coba lagi.');
-                }
-            } catch (error) {
-                console.error(error);
-                alert('Terjadi kesalahan saat menghapus transaksi. Silakan cek konsol untuk detail.');
+                axios.post(`/transaksi/${id}`, {
+                    '_method': 'DELETE',
+                    '_token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                })
+                    .then(function (response) {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: 'Transaksi berhasil dibatalkan.',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: { popup: 'rounded-2xl' }
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch(function (error) {
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: 'Terjadi kesalahan saat menghapus data.',
+                            icon: 'error',
+                            customClass: { popup: 'rounded-2xl' }
+                        });
+                        console.log(error);
+                    });
             }
-        }
+        });
     }
 </script>
+
+<style>
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in-down {
+        animation: fadeInDown 0.4s ease-out;
+    }
+</style>

@@ -13,6 +13,7 @@ class Dekorasi extends Model
         'type_dekorasi',
         'deskripsi',
         'harga',
+        'gambar',
     ];
 
     protected $table = 'dekorasi';
