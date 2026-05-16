@@ -10,6 +10,7 @@ class Client extends Model
     use HasFactory;
 
     protected  $fillable = [
+        'id_user',
         'namapl',
         'namapr',
         'alamat',
@@ -19,11 +20,18 @@ class Client extends Model
 
     protected $table = 'client';
 
-    public function events(){
-        return $this->hasMany(Events::class,'id_client');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function transaksi(){
+    public function events()
+    {
+        return $this->hasMany(Events::class, 'id_client');
+    }
+
+    public function transaksi()
+    {
         return $this->hasMany(Transaksi::class, 'id');
     }
 }

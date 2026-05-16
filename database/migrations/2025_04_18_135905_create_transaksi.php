@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('id_paket');
             $table->string('kode_invoice');
+            $table->string('lokasi_acara');
             $table->integer('id_client');
             $table->date('tanggal');
             $table->date('tanggal_acara');
             $table->integer('biaya_tambahan')->nullable();
-            $table->enum('status',['Baru Booking','Selesai']);
+            $table->enum('status',['Baru Booking','Selesai','Dibatalkan','Persiapan']);
             $table->enum('pembayaran',['Dana Pertama','Lunas']);
             $table->string('id_user');
             $table->integer('total_bayar');

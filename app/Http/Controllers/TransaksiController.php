@@ -66,34 +66,43 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. TAMBAHKAN VALIDASI UNTUK MENCEGAH ERROR SQL
-        // Sistem akan mengecek apakah id_client dan id_paket terisi. 
-        // Jika kosong, sistem akan otomatis mengembalikan user ke halaman form dengan pesan error.
+        $user = Auth::user();
+
+        // Jika role CLIENT, ambil id_client dari database
+        if ($user->role === 'CLIENT') {
+            $client = Client::where('id_user', $user->id)->first();
+            if (!$client) {
+                return redirect()->back()
+                    ->withErrors(['id_client' => 'Profil klien Anda belum terdaftar. Silakan hubungi admin untuk mendaftarkan data Anda.'])
+                    ->withInput();
+            }
+            // Timpa nilai id_client dari form
+            $request->merge(['id_client' => $client->id]);
+        }
+
+        // Validasi tetap sama
         $request->validate([
-            'kode_invoice'  => 'required',
-            'id_client'     => 'required',
-            'id_paket'      => 'required',
+            'kode_invoice'  => 'required|string',
+            'lokasi_acara'  => 'required|string',
+            'id_client'     => 'required|exists:client,id',
+            'id_paket'      => 'required|exists:paket,id',
             'tanggal'       => 'required|date',
             'tanggal_acara' => 'required|date',
             'total_bayar'   => 'required|numeric',
-        ], [
-            // Pesan error khusus agar mudah dipahami
-            'id_client.required' => 'Gagal menyimpan! Data Klien tidak boleh kosong. Jika Anda Klien, pastikan Admin telah mendaftarkan profil Anda.',
-            'id_paket.required'  => 'Gagal menyimpan! Anda harus memilih Paket Layanan.',
         ]);
 
-        // 2. SIMPAN DATA JIKA VALIDASI LOLOS
         Transaksi::create([
             'kode_invoice'  => $request->kode_invoice,
+            'lokasi_acara'  => $request->lokasi_acara,
             'id_client'     => $request->id_client,
             'tanggal'       => $request->tanggal,
             'tanggal_acara' => $request->tanggal_acara,
             'id_paket'      => $request->id_paket,
             'total_bayar'   => $request->total_bayar,
-            'id_user'       => Auth::id(),
-        ]);3
+            'id_user'       => $user->id,
+        ]);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi / Booking Berhasil Ditambahkan!');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan!');
     }
 
     /**

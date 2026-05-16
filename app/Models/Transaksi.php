@@ -13,6 +13,7 @@ class Transaksi extends Model
         'id_paket',
         'kode_invoice',
         'id_client',
+        'lokasi_acara',
         'tanggal',
         'tanggal_acara',
         'biaya_tambahan',

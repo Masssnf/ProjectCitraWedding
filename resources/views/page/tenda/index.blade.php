@@ -1,123 +1,201 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-medium text-xl text-gray-800 tracking-widest uppercase leading-tight">
-            {{ __('Manajemen Tenda') }}
-        </h2>
     </x-slot>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="py-12 bg-gradient-to-br from-indigo-100 via-rose-50 to-purple-100 min-h-screen relative overflow-hidden">
 
-    <div class="py-12 bg-gray-50 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
-            @if(session('success'))
-                <div id="alert-success" class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl shadow-sm flex items-center justify-between animate-fade-in-down mb-6">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div
+                class="absolute top-20 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float">
+            </div>
+            <div
+                class="absolute bottom-20 right-10 w-80 h-80 bg-rose-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float animation-delay-2000">
+            </div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-4000">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 relative z-10">
+
+            <!-- Welcome Section -->
+            <div class="mb-8 text-center">
+                <h1
+                    class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-rose-600 bg-clip-text text-transparent">
+                    Manajemen Tenda
+                </h1>
+                <p class="text-gray-500 mt-2">Kelola inventaris ukuran dan harga sewa tenda pernikahan</p>
+            </div>
+
+            @if (session('success'))
+                <div id="alert-success"
+                    class="bg-emerald-50/80 backdrop-blur-sm border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl shadow-lg flex items-center justify-between animate-fade-in-down mb-6">
                     <div class="flex items-center gap-3">
                         <div class="bg-emerald-100 p-2 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
+                            <i class="fas fa-check-circle text-emerald-600 text-lg"></i>
                         </div>
                         <span class="font-medium text-sm tracking-wide">{{ session('success') }}</span>
                     </div>
-                    <button onclick="document.getElementById('alert-success').style.display='none'" class="text-emerald-500 hover:text-emerald-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
+                    <button onclick="document.getElementById('alert-success').style.display='none'"
+                        class="text-emerald-500 hover:text-emerald-700 transition-colors">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-1">
-                    <div class="p-6 border-b border-gray-50">
-                        <h3 class="text-lg font-medium text-gray-800 tracking-wide">Data Tenda Baru</h3>
-                        <p class="text-xs text-gray-400 font-light mt-1">Tambahkan inventaris ukuran tenda.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+                <!-- Form Tambah Tenda -->
+                <div class="relative group lg:col-span-1">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition duration-500">
                     </div>
-                    <div class="p-6">
-                        <form method="POST" action="{{ route('tenda.store') }}" class="space-y-4">
-                            @csrf
-                            <div>
-                                <x-input-label for="uk_tenda" value="Ukuran Tenda" class="text-gray-600 mb-1.5 text-xs" />
-                                <x-text-input type="text" name="uk_tenda" class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20" required placeholder="Contoh: 4x6 Meter / Tenda VIP" />
+                    <div
+                        class="relative bg-white/40 backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden border border-white/50">
+                        <div class="px-6 py-5 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                                    <i class="fas fa-campground text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-gray-800 font-bold text-lg">Data Tenda Baru</h3>
+                                    <p class="text-gray-500 text-xs">Tambahkan inventaris ukuran tenda</p>
+                                </div>
                             </div>
-                            <div>
-                                <x-input-label for="harga_tenda" value="Harga Sewa (Rp)" class="text-gray-600 mb-1.5 text-xs" />
-                                <x-text-input type="number" name="harga_tenda" class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20" required placeholder="1500000" />
-                            </div>
-                            <div class="pt-3">
-                                <button type="submit" class="w-full inline-flex justify-center items-center px-6 py-2.5 bg-zinc-900 border border-transparent rounded-full font-medium text-sm text-white hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-900 transition-colors tracking-wide">
-                                    Simpan Tenda
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="p-6">
+                            <form method="POST" action="{{ route('tenda.store') }}" class="space-y-4">
+                                @csrf
+                                <div>
+                                    <x-input-label for="uk_tenda" value="Ukuran Tenda"
+                                        class="text-gray-700 font-medium mb-1.5 text-xs" />
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <i class="fas fa-ruler-combined text-gray-400 text-sm"></i>
+                                        </div>
+                                        <x-text-input type="text" name="uk_tenda"
+                                            class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all"
+                                            required placeholder="Contoh: 4x6 Meter / Tenda VIP" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-input-label for="harga_tenda" value="Harga Sewa (Rp)"
+                                        class="text-gray-700 font-medium mb-1.5 text-xs" />
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <i class="fas fa-money-bill-wave text-gray-400 text-sm"></i>
+                                        </div>
+                                        <x-text-input type="number" name="harga_tenda"
+                                            class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all"
+                                            required placeholder="1500000" />
+                                    </div>
+                                </div>
+                                <div class="pt-3">
+                                    <button type="submit"
+                                        class="w-full inline-flex justify-center items-center px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 border border-transparent rounded-full font-medium text-sm text-white hover:from-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all tracking-wide shadow-md">
+                                        <i class="fas fa-save mr-2"></i>
+                                        Simpan Tenda
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-2">
-                    <div class="p-6 border-b border-gray-50 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-800 tracking-wide">Katalog Tenda</h3>
-                            <p class="text-xs text-gray-400 font-light mt-1">Daftar harga sewa tenda pernikahan.</p>
+                <!-- Daftar Tenda -->
+                <div class="relative group lg:col-span-2">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition duration-500">
+                    </div>
+                    <div
+                        class="relative bg-white/40 backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden border border-white/50">
+                        <div class="px-6 py-5 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                                    <i class="fas fa-warehouse text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-gray-800 font-bold text-lg">Katalog Tenda</h3>
+                                    <p class="text-gray-500 text-xs">Daftar harga sewa tenda pernikahan</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-600">
-                            <thead class="text-xs text-gray-400 uppercase tracking-wider bg-slate-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4 font-medium text-center w-16">No</th>
-                                    <th scope="col" class="px-6 py-4 font-medium">Ukuran Tenda</th>
-                                    <th scope="col" class="px-6 py-4 font-medium">Harga Sewa</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50">
-                                @forelse ($tenda as $t)
-                                    <tr class="bg-white hover:bg-slate-50/50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-gray-400 font-light">
-                                            {{ ($tenda->currentPage() - 1) * $tenda->perPage() + $loop->iteration }}
-                                        </td>
-                                        <td class="px-6 py-4 font-medium text-gray-800">
-                                            {{ $t->uk_tenda }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="font-medium text-emerald-600">Rp {{ number_format($t->harga_tenda, 0, ',', '.') }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            <div class="flex items-center justify-center gap-2">
-                                                <button type="button"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full text-xs font-medium tracking-wide transition-colors"
-                                                    onclick="editSourceModal(this)" data-modal-target="sourceModal"
-                                                    data-id="{{ $t->id }}" 
-                                                    data-uk_tenda="{{ $t->uk_tenda }}" 
-                                                    data-harga_tenda="{{ $t->harga_tenda }}">
-                                                    Edit
-                                                </button>
-                                                
-                                                <button type="button"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
-                                                    onclick="tendaDelete('{{ $t->id }}','{{ addslashes($t->uk_tenda) }}')">
-                                                    Hapus
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-600">
+                                <thead
+                                    class="text-xs text-gray-500 uppercase tracking-wider bg-white/30 backdrop-blur-sm">
                                     <tr>
-                                        <td colspan="4" class="px-6 py-12 text-center">
-                                            <div class="flex flex-col items-center justify-center">
-                                                <p class="text-gray-400 font-light">Belum ada ukuran tenda yang terdaftar.</p>
-                                            </div>
-                                        </td>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-16">No</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Ukuran Tenda</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Harga Sewa</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center">Aksi</th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-4 border-t border-gray-50">
-                        {{ $tenda->links() }}
+                                </thead>
+                                <tbody class="divide-y divide-white/30">
+                                    @forelse ($tenda as $t)
+                                        <tr
+                                            class="bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-all duration-200">
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-center text-gray-500 font-light">
+                                                {{ ($tenda->currentPage() - 1) * $tenda->perPage() + $loop->iteration }}
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-gray-800">
+                                                <i class="fas fa-campground text-indigo-500 mr-2"></i>
+                                                {{ $t->uk_tenda }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="font-medium text-emerald-600">
+                                                    <i class="fas fa-money-bill-wave text-emerald-500 mr-1"></i>
+                                                    Rp {{ number_format($t->harga_tenda, 0, ',', '.') }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button type="button"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                                                        onclick="editSourceModal(this)" data-modal-target="sourceModal"
+                                                        data-id="{{ $t->id }}"
+                                                        data-uk_tenda="{{ $t->uk_tenda }}"
+                                                        data-harga_tenda="{{ $t->harga_tenda }}">
+                                                        <i class="fas fa-edit mr-1"></i> Edit
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                                                        onclick="tendaDelete('{{ $t->id }}','{{ addslashes($t->uk_tenda) }}')">
+                                                        <i class="fas fa-trash-alt mr-1"></i> Hapus
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-12 text-center">
+                                                <div class="flex flex-col items-center justify-center">
+                                                    <div
+                                                        class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
+                                                        <i class="fas fa-campground text-gray-400 text-3xl"></i>
+                                                    </div>
+                                                    <p class="text-gray-500 font-medium">Belum ada ukuran tenda yang
+                                                        terdaftar</p>
+                                                    <p class="text-gray-400 text-sm mt-1">Klik form di samping untuk
+                                                        menambahkan tenda</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-white/30">
+                            {{ $tenda->links() }}
+                        </div>
                     </div>
                 </div>
 
@@ -125,42 +203,66 @@
         </div>
     </div>
 
-    <div class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-300" id="sourceModal">
-        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="sourceModalClose(this)" data-modal-target="sourceModal"></div>
-        
-        <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl mx-4 transform transition-all">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-medium text-gray-800 tracking-wide" id="title_source">
-                    Update Tenda
-                </h3>
+    <!-- Modal Edit Tenda -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-300"
+        id="sourceModal">
+        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="sourceModalClose(this)"
+            data-modal-target="sourceModal"></div>
+
+        <div
+            class="relative w-full max-w-lg bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl mx-4 transform transition-all border border-white/50">
+            <div
+                class="flex items-center justify-between px-6 py-4 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent rounded-t-2xl">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-edit text-white text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 tracking-wide" id="title_source">
+                        Update Tenda
+                    </h3>
+                </div>
                 <button type="button" onclick="sourceModalClose(this)" data-modal-target="sourceModal"
                     class="text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-            
+
             <form method="POST" id="formSourceModal">
                 @csrf
                 <div class="px-6 py-5 space-y-4">
                     <div>
-                        <x-input-label for="modal_uk_tenda" value="Ukuran Tenda" class="text-gray-600 mb-1.5 text-xs" />
-                        <x-text-input type="text" id="modal_uk_tenda" name="uk_tenda" class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20" />
+                        <x-input-label for="modal_uk_tenda" value="Ukuran Tenda"
+                            class="text-gray-700 font-medium mb-1.5 text-xs" />
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-ruler-combined text-gray-400 text-sm"></i>
+                            </div>
+                            <x-text-input type="text" id="modal_uk_tenda" name="uk_tenda"
+                                class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all" />
+                        </div>
                     </div>
                     <div>
-                        <x-input-label for="modal_harga_tenda" value="Harga Sewa (Rp)" class="text-gray-600 mb-1.5 text-xs" />
-                        <x-text-input type="number" id="modal_harga_tenda" name="harga_tenda" class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20" />
+                        <x-input-label for="modal_harga_tenda" value="Harga Sewa (Rp)"
+                            class="text-gray-700 font-medium mb-1.5 text-xs" />
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-money-bill-wave text-gray-400 text-sm"></i>
+                            </div>
+                            <x-text-input type="number" id="modal_harga_tenda" name="harga_tenda"
+                                class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all" />
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center justify-end px-6 py-4 bg-gray-50 rounded-b-2xl gap-3">
+                <div
+                    class="flex items-center justify-end px-6 py-4 bg-white/30 backdrop-blur-sm rounded-b-2xl gap-3 border-t border-white/30">
                     <button type="button" data-modal-target="sourceModal" onclick="sourceModalClose(this)"
-                        class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors tracking-wide">
-                        Batal
+                        class="px-5 py-2 text-sm font-medium text-gray-700 bg-white/50 backdrop-blur-sm border border-white/50 rounded-full hover:bg-white/80 transition-colors tracking-wide">
+                        <i class="fas fa-times mr-1"></i> Batal
                     </button>
                     <button type="submit" id="formSourceButton"
-                        class="px-5 py-2 text-sm font-medium text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-colors tracking-wide">
-                        Simpan Perubahan
+                        class="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full hover:from-indigo-600 hover:to-purple-600 transition-colors tracking-wide shadow-md">
+                        <i class="fas fa-save mr-1"></i> Simpan Perubahan
                     </button>
                 </div>
             </form>
@@ -170,30 +272,28 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 
 <script>
     // FUNGSI MEMBUKA MODAL EDIT
     const editSourceModal = (button) => {
         const formModal = document.getElementById('formSourceModal');
         const modalTarget = button.dataset.modalTarget;
-        
+
         const id = button.dataset.id;
         const uk_tenda = button.dataset.uk_tenda;
         const harga_tenda = button.dataset.harga_tenda;
-        
+
         let url = "{{ route('tenda.update', ':id') }}".replace(':id', id);
 
-        // Ubah Judul & Isi Input
-        document.getElementById('title_source').innerText = `Edit: ${uk_tenda}`;
+        document.getElementById('title_source').innerHTML = `<i class="fas fa-edit mr-2"></i> Edit: ${uk_tenda}`;
         document.getElementById('modal_uk_tenda').value = uk_tenda;
         document.getElementById('modal_harga_tenda').value = harga_tenda;
 
-        // Atur URL Action Form
         document.getElementById('formSourceModal').setAttribute('action', url);
-        
-        // Buat atau timpa input _method PATCH
+
         let methodInput = document.getElementById('method_patch');
-        if(!methodInput) {
+        if (!methodInput) {
             methodInput = document.createElement('input');
             methodInput.setAttribute('type', 'hidden');
             methodInput.setAttribute('name', '_method');
@@ -208,8 +308,7 @@
     // FUNGSI MENUTUP MODAL
     const sourceModalClose = (button) => {
         let targetId = button.getAttribute('data-modal-target');
-        if(!targetId) targetId = 'sourceModal'; 
-        
+        if (!targetId) targetId = 'sourceModal';
         document.getElementById(targetId).classList.add('hidden');
     }
 
@@ -217,16 +316,16 @@
     const tendaDelete = (id, uk_tenda) => {
         Swal.fire({
             title: 'Hapus Data?',
-            text: `Tenda ukuran "${uk_tenda}" akan dihapus permanen!`,
+            html: `Tenda ukuran "<strong>${uk_tenda}</strong>" akan dihapus permanen!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#e11d48', 
-            cancelButtonColor: '#f1f5f9', 
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: '<span class="text-slate-700">Batal</span>',
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#f1f5f9',
+            confirmButtonText: '<i class="fas fa-trash-alt mr-1"></i> Ya, Hapus!',
+            cancelButtonText: '<i class="fas fa-times mr-1"></i> Batal',
             reverseButtons: true,
             customClass: {
-                popup: 'rounded-2xl',
+                popup: 'rounded-2xl backdrop-blur-xl bg-white/90',
                 confirmButton: 'rounded-full px-6 py-2.5 text-sm font-medium tracking-wide',
                 cancelButton: 'rounded-full px-6 py-2.5 text-sm font-medium tracking-wide border-none shadow-none',
             }
@@ -235,45 +334,108 @@
                 Swal.fire({
                     title: 'Menghapus...',
                     allowOutsideClick: false,
-                    didOpen: () => { Swal.showLoading(); }
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
                 });
 
                 axios.post(`/tenda/${id}`, {
-                    '_method': 'DELETE',
-                    '_token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                })
-                .then(function(response) {
-                    Swal.fire({
-                        title: 'Terhapus!',
-                        text: 'Data tenda berhasil dihapus.',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        customClass: { popup: 'rounded-2xl' }
-                    }).then(() => {
-                        location.reload(); 
+                        '_method': 'DELETE',
+                        '_token': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    })
+                    .then(function(response) {
+                        Swal.fire({
+                            title: '<i class="fas fa-check-circle text-emerald-500 mr-2"></i> Terhapus!',
+                            text: 'Data tenda berhasil dihapus.',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: {
+                                popup: 'rounded-2xl'
+                            }
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch(function(error) {
+                        Swal.fire({
+                            title: '<i class="fas fa-exclamation-triangle text-rose-500 mr-2"></i> Gagal!',
+                            text: 'Terjadi kesalahan saat menghapus data.',
+                            icon: 'error',
+                            customClass: {
+                                popup: 'rounded-2xl'
+                            }
+                        });
+                        console.log(error);
                     });
-                })
-                .catch(function(error) {
-                    Swal.fire({
-                        title: 'Gagal!',
-                        text: 'Terjadi kesalahan saat menghapus data.',
-                        icon: 'error',
-                        customClass: { popup: 'rounded-2xl' }
-                    });
-                    console.log(error);
-                });
             }
         })
     }
 </script>
 
 <style>
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* Smooth Transitions */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
     }
+
+    /* Animation Delays for Background Elements */
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+
+    /* Float Animation */
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px) translateX(0px);
+            opacity: 0.3;
+        }
+
+        50% {
+            transform: translateY(-20px) translateX(10px);
+            opacity: 0.5;
+        }
+    }
+
+    .animate-float {
+        animation: float 8s ease-in-out infinite;
+    }
+
+    /* Fade In Animation */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .animate-fade-in-down {
         animation: fadeInDown 0.4s ease-out;
+    }
+
+    /* Menghilangkan underline pada link */
+    a {
+        text-decoration: none;
+    }
+
+    /* Custom focus style for inputs */
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
     }
 </style>

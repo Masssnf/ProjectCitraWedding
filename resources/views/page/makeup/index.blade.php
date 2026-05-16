@@ -1,145 +1,220 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-medium text-xl text-gray-800 tracking-widest uppercase leading-tight">
-            {{ __('Manajemen Makeup') }}
-        </h2>
     </x-slot>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="py-12 bg-gradient-to-br from-indigo-100 via-rose-50 to-purple-100 min-h-screen relative overflow-hidden">
 
-    <div class="py-12 bg-gray-50 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div
+                class="absolute top-20 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float">
+            </div>
+            <div
+                class="absolute bottom-20 right-10 w-80 h-80 bg-rose-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float animation-delay-2000">
+            </div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-4000">
+            </div>
+        </div>
 
-            @if(session('success'))
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 relative z-10">
+
+            <!-- Welcome Section -->
+            <div class="mb-8 text-center">
+                <h1
+                    class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-rose-600 bg-clip-text text-transparent">
+                    Manajemen Makeup
+                </h1>
+                <p class="text-gray-500 mt-2">Kelola layanan tata rias pengantin</p>
+            </div>
+
+            @if (session('success'))
                 <div id="alert-success"
-                    class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl shadow-sm flex items-center justify-between animate-fade-in-down mb-6">
+                    class="bg-emerald-50/80 backdrop-blur-sm border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl shadow-lg flex items-center justify-between animate-fade-in-down mb-6">
                     <div class="flex items-center gap-3">
                         <div class="bg-emerald-100 p-2 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
+                            <i class="fas fa-check-circle text-emerald-600 text-lg"></i>
                         </div>
                         <span class="font-medium text-sm tracking-wide">{{ session('success') }}</span>
                     </div>
                     <button onclick="document.getElementById('alert-success').style.display='none'"
                         class="text-emerald-500 hover:text-emerald-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-1">
-                    <div class="p-6 border-b border-gray-50">
-                        <h3 class="text-lg font-medium text-gray-800 tracking-wide">Data Makeup Baru</h3>
-                        <p class="text-xs text-gray-400 font-light mt-1">Tambahkan layanan rias pengantin.</p>
+                <!-- Form Tambah Makeup -->
+                <div class="relative group lg:col-span-1">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition duration-500">
                     </div>
-                    <div class="p-6">
-                        <form method="POST" action="{{ route('makeup.store') }}" class="space-y-4">
-                            @csrf
-                            <div>
-                                <x-input-label for="type_makeup" value="Tipe Makeup"
-                                    class="text-gray-600 mb-1.5 text-xs" />
-                                <x-text-input type="text" name="type_makeup"
-                                    class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20"
-                                    required placeholder="Contoh: Flawless Makeup" />
+                    <div
+                        class="relative bg-white/40 backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden border border-white/50">
+                        <div class="px-6 py-5 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                                    <i class="fas fa-paint-brush text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-gray-800 font-bold text-lg">Data Makeup Baru</h3>
+                                    <p class="text-gray-500 text-xs">Tambahkan layanan rias pengantin</p>
+                                </div>
                             </div>
-                            <div>
-                                <x-input-label for="description" value="Deskripsi Detail"
-                                    class="text-gray-600 mb-1.5 text-xs" />
-                                <textarea name="description" rows="3"
-                                    class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 transition-colors resize-none"
-                                    required placeholder="Jelaskan detail riasan, brand kosmetik, dll..."></textarea>
-                            </div>
-                            <div>
-                                <x-input-label for="harga" value="Harga Layanan (Rp)"
-                                    class="text-gray-600 mb-1.5 text-xs" />
-                                <x-text-input type="number" name="harga"
-                                    class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20"
-                                    required placeholder="1200000" />
-                            </div>
-                            <div class="pt-3">
-                                <button type="submit"
-                                    class="w-full inline-flex justify-center items-center px-6 py-2.5 bg-zinc-900 border border-transparent rounded-full font-medium text-sm text-white hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-900 transition-colors tracking-wide">
-                                    Simpan Makeup
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="p-6">
+                            <form method="POST" action="{{ route('makeup.store') }}" class="space-y-4">
+                                @csrf
+                                <div>
+                                    <x-input-label for="type_makeup" value="Tipe Makeup"
+                                        class="text-gray-700 font-medium mb-1.5 text-xs" />
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <i class="fas fa-tag text-gray-400 text-sm"></i>
+                                        </div>
+                                        <x-text-input type="text" name="type_makeup"
+                                            class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all"
+                                            required placeholder="Contoh: Flawless Makeup" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-input-label for="description" value="Deskripsi Detail"
+                                        class="text-gray-700 font-medium mb-1.5 text-xs" />
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none pt-2">
+                                            <i class="fas fa-align-left text-gray-400 text-sm"></i>
+                                        </div>
+                                        <textarea name="description" rows="3"
+                                            class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all resize-none"
+                                            required placeholder="Jelaskan detail riasan, brand kosmetik, dll..."></textarea>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-input-label for="harga" value="Harga Layanan (Rp)"
+                                        class="text-gray-700 font-medium mb-1.5 text-xs" />
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <i class="fas fa-money-bill-wave text-gray-400 text-sm"></i>
+                                        </div>
+                                        <x-text-input type="number" name="harga"
+                                            class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all"
+                                            required placeholder="1200000" />
+                                    </div>
+                                </div>
+                                <div class="pt-3">
+                                    <button type="submit"
+                                        class="w-full inline-flex justify-center items-center px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 border border-transparent rounded-full font-medium text-sm text-white hover:from-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all tracking-wide shadow-md">
+                                        <i class="fas fa-save mr-2"></i>
+                                        Simpan Makeup
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-2">
-                    <div class="p-6 border-b border-gray-50 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-800 tracking-wide">Katalog Makeup</h3>
-                            <p class="text-xs text-gray-400 font-light mt-1">Daftar paket tata rias yang tersedia.</p>
+                <!-- Daftar Makeup -->
+                <div class="relative group lg:col-span-2">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition duration-500">
+                    </div>
+                    <div
+                        class="relative bg-white/40 backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden border border-white/50">
+                        <div class="px-6 py-5 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                                    <i class="fas fa-palette text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-gray-800 font-bold text-lg">Katalog Makeup</h3>
+                                    <p class="text-gray-500 text-xs">Daftar paket tata rias yang tersedia</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-600">
-                            <thead class="text-xs text-gray-400 uppercase tracking-wider bg-slate-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4 font-medium text-center w-16">No</th>
-                                    <th scope="col" class="px-6 py-4 font-medium">Tipe Makeup</th>
-                                    <th scope="col" class="px-6 py-4 font-medium">Deskripsi & Harga</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50">
-                                @forelse ($makeup as $m)
-                                    <tr class="bg-white hover:bg-slate-50/50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-gray-400 font-light">
-                                            {{ ($makeup->currentPage() - 1) * $makeup->perPage() + $loop->iteration }}
-                                        </td>
-                                        <td class="px-6 py-4 font-medium text-gray-800">
-                                            {{ $m->type_makeup }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-gray-500 text-xs font-light mb-1 line-clamp-2 max-w-xs">
-                                                {{ $m->description }}</div>
-                                            <div class="font-medium text-emerald-600">Rp
-                                                {{ number_format($m->harga, 0, ',', '.') }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            <div class="flex items-center justify-center gap-2">
-                                                <button type="button"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full text-xs font-medium tracking-wide transition-colors"
-                                                    onclick="editSourceModal(this)" data-modal-target="sourceModal"
-                                                    data-id="{{ $m->id }}" data-type_makeup="{{ $m->type_makeup }}"
-                                                    data-description="{{ $m->description }}" data-harga="{{ $m->harga }}">
-                                                    Edit
-                                                </button>
-
-                                                <button type="button"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
-                                                    onclick="makeupDelete('{{ $m->id }}','{{ addslashes($m->type_makeup) }}')">
-                                                    Hapus
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-600">
+                                <thead
+                                    class="text-xs text-gray-500 uppercase tracking-wider bg-white/30 backdrop-blur-sm">
                                     <tr>
-                                        <td colspan="4" class="px-6 py-12 text-center">
-                                            <div class="flex flex-col items-center justify-center">
-                                                <p class="text-gray-400 font-light">Belum ada paket makeup yang terdaftar.
-                                                </p>
-                                            </div>
-                                        </td>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-16">No</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Tipe Makeup</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Deskripsi & Harga</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center">Aksi</th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-4 border-t border-gray-50">
-                        {{ $makeup->links() }}
+                                </thead>
+                                <tbody class="divide-y divide-white/30">
+                                    @forelse ($makeup as $m)
+                                        <tr
+                                            class="bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-all duration-200">
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-center text-gray-500 font-light">
+                                                {{ ($makeup->currentPage() - 1) * $makeup->perPage() + $loop->iteration }}
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-gray-800">
+                                                <i class="fas fa-paint-brush text-indigo-500 mr-2"></i>
+                                                {{ $m->type_makeup }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div
+                                                    class="text-gray-500 text-xs font-light mb-1 line-clamp-2 max-w-xs">
+                                                    <i class="fas fa-align-left text-gray-400 mr-1"></i>
+                                                    {{ $m->description }}
+                                                </div>
+                                                <div class="font-medium text-emerald-600">
+                                                    <i class="fas fa-money-bill-wave text-emerald-500 mr-1"></i>
+                                                    Rp {{ number_format($m->harga, 0, ',', '.') }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button type="button"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                                                        onclick="editSourceModal(this)"
+                                                        data-modal-target="sourceModal" data-id="{{ $m->id }}"
+                                                        data-type_makeup="{{ $m->type_makeup }}"
+                                                        data-description="{{ $m->description }}"
+                                                        data-harga="{{ $m->harga }}">
+                                                        <i class="fas fa-edit mr-1"></i> Edit
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                                                        onclick="makeupDelete('{{ $m->id }}','{{ addslashes($m->type_makeup) }}')">
+                                                        <i class="fas fa-trash-alt mr-1"></i> Hapus
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-12 text-center">
+                                                <div class="flex flex-col items-center justify-center">
+                                                    <div
+                                                        class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
+                                                        <i class="fas fa-paint-brush text-gray-400 text-3xl"></i>
+                                                    </div>
+                                                    <p class="text-gray-500 font-medium">Belum ada paket makeup yang
+                                                        terdaftar</p>
+                                                    <p class="text-gray-400 text-sm mt-1">Klik form di samping untuk
+                                                        menambahkan makeup</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-white/30">
+                            {{ $makeup->links() }}
+                        </div>
                     </div>
                 </div>
 
@@ -147,23 +222,28 @@
         </div>
     </div>
 
+    <!-- Modal Edit Makeup -->
     <div class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-300"
         id="sourceModal">
         <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="sourceModalClose(this)"
             data-modal-target="sourceModal"></div>
 
-        <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl mx-4 transform transition-all">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-medium text-gray-800 tracking-wide" id="title_source">
-                    Update Makeup
-                </h3>
+        <div
+            class="relative w-full max-w-lg bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl mx-4 transform transition-all border border-white/50">
+            <div
+                class="flex items-center justify-between px-6 py-4 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent rounded-t-2xl">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-edit text-white text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 tracking-wide" id="title_source">
+                        Update Makeup
+                    </h3>
+                </div>
                 <button type="button" onclick="sourceModalClose(this)" data-modal-target="sourceModal"
                     class="text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
 
@@ -172,29 +252,47 @@
                 <div class="px-6 py-5 space-y-4">
                     <div>
                         <x-input-label for="modal_type_makeup" value="Tipe Makeup"
-                            class="text-gray-600 mb-1.5 text-xs" />
-                        <x-text-input type="text" id="modal_type_makeup" name="type_makeup"
-                            class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20" />
+                            class="text-gray-700 font-medium mb-1.5 text-xs" />
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-tag text-gray-400 text-sm"></i>
+                            </div>
+                            <x-text-input type="text" id="modal_type_makeup" name="type_makeup"
+                                class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all" />
+                        </div>
                     </div>
                     <div>
-                        <x-input-label for="modal_description" value="Deskripsi" class="text-gray-600 mb-1.5 text-xs" />
-                        <textarea id="modal_description" name="description" rows="3"
-                            class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring focus:ring-zinc-900/20 text-gray-700 transition-colors resize-none"></textarea>
+                        <x-input-label for="modal_description" value="Deskripsi"
+                            class="text-gray-700 font-medium mb-1.5 text-xs" />
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none pt-2">
+                                <i class="fas fa-align-left text-gray-400 text-sm"></i>
+                            </div>
+                            <textarea id="modal_description" name="description" rows="3"
+                                class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all resize-none"></textarea>
+                        </div>
                     </div>
                     <div>
-                        <x-input-label for="modal_harga" value="Harga (Rp)" class="text-gray-600 mb-1.5 text-xs" />
-                        <x-text-input type="number" id="modal_harga" name="harga"
-                            class="block w-full border-gray-200 rounded-xl text-sm focus:border-zinc-900 focus:ring-zinc-900/20" />
+                        <x-input-label for="modal_harga" value="Harga (Rp)"
+                            class="text-gray-700 font-medium mb-1.5 text-xs" />
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-money-bill-wave text-gray-400 text-sm"></i>
+                            </div>
+                            <x-text-input type="number" id="modal_harga" name="harga"
+                                class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all" />
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center justify-end px-6 py-4 bg-gray-50 rounded-b-2xl gap-3">
+                <div
+                    class="flex items-center justify-end px-6 py-4 bg-white/30 backdrop-blur-sm rounded-b-2xl gap-3 border-t border-white/30">
                     <button type="button" data-modal-target="sourceModal" onclick="sourceModalClose(this)"
-                        class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors tracking-wide">
-                        Batal
+                        class="px-5 py-2 text-sm font-medium text-gray-700 bg-white/50 backdrop-blur-sm border border-white/50 rounded-full hover:bg-white/80 transition-colors tracking-wide">
+                        <i class="fas fa-times mr-1"></i> Batal
                     </button>
                     <button type="submit" id="formSourceButton"
-                        class="px-5 py-2 text-sm font-medium text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-colors tracking-wide">
-                        Simpan Perubahan
+                        class="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full hover:from-indigo-600 hover:to-purple-600 transition-colors tracking-wide shadow-md">
+                        <i class="fas fa-save mr-1"></i> Simpan Perubahan
                     </button>
                 </div>
             </form>
@@ -204,6 +302,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 
 <script>
     // FUNGSI MEMBUKA MODAL EDIT
@@ -218,16 +317,13 @@
 
         let url = "{{ route('makeup.update', ':id') }}".replace(':id', id);
 
-        // Ubah Judul & Isi Input
-        document.getElementById('title_source').innerText = `Edit: ${type_makeup}`;
+        document.getElementById('title_source').innerHTML = `<i class="fas fa-edit mr-2"></i> Edit: ${type_makeup}`;
         document.getElementById('modal_type_makeup').value = type_makeup;
         document.getElementById('modal_description').value = description;
         document.getElementById('modal_harga').value = harga;
 
-        // Atur URL Action Form
         document.getElementById('formSourceModal').setAttribute('action', url);
 
-        // Buat atau timpa input _method PATCH
         let methodInput = document.getElementById('method_patch');
         if (!methodInput) {
             methodInput = document.createElement('input');
@@ -243,11 +339,8 @@
 
     // FUNGSI MENUTUP MODAL
     const sourceModalClose = (button) => {
-        // Ambil ID modal yang perlu ditutup dari elemen background hitam (atau tombol batal)
         let targetId = button.getAttribute('data-modal-target');
-        // Jika tidak ada data-modal-target (misalnya karena diklik di backdrop), fallback ke ID modal utama
         if (!targetId) targetId = 'sourceModal';
-
         document.getElementById(targetId).classList.add('hidden');
     }
 
@@ -255,16 +348,16 @@
     const makeupDelete = (id, type_makeup) => {
         Swal.fire({
             title: 'Hapus Data?',
-            text: `Paket Makeup "${type_makeup}" akan dihapus permanen!`,
+            html: `Paket Makeup "<strong>${type_makeup}</strong>" akan dihapus permanen!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#e11d48',
             cancelButtonColor: '#f1f5f9',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: '<span class="text-slate-700">Batal</span>',
+            confirmButtonText: '<i class="fas fa-trash-alt mr-1"></i> Ya, Hapus!',
+            cancelButtonText: '<i class="fas fa-times mr-1"></i> Batal',
             reverseButtons: true,
             customClass: {
-                popup: 'rounded-2xl',
+                popup: 'rounded-2xl backdrop-blur-xl bg-white/90',
                 confirmButton: 'rounded-full px-6 py-2.5 text-sm font-medium tracking-wide',
                 cancelButton: 'rounded-full px-6 py-2.5 text-sm font-medium tracking-wide border-none shadow-none',
             }
@@ -273,31 +366,38 @@
                 Swal.fire({
                     title: 'Menghapus...',
                     allowOutsideClick: false,
-                    didOpen: () => { Swal.showLoading(); }
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
                 });
 
                 axios.post(`/makeup/${id}`, {
-                    '_method': 'DELETE',
-                    '_token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                })
-                    .then(function (response) {
+                        '_method': 'DELETE',
+                        '_token': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    })
+                    .then(function(response) {
                         Swal.fire({
-                            title: 'Terhapus!',
+                            title: '<i class="fas fa-check-circle text-emerald-500 mr-2"></i> Terhapus!',
                             text: 'Data makeup berhasil dihapus.',
                             icon: 'success',
                             showConfirmButton: false,
                             timer: 1500,
-                            customClass: { popup: 'rounded-2xl' }
+                            customClass: {
+                                popup: 'rounded-2xl'
+                            }
                         }).then(() => {
                             location.reload();
                         });
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         Swal.fire({
-                            title: 'Gagal!',
+                            title: '<i class="fas fa-exclamation-triangle text-rose-500 mr-2"></i> Gagal!',
                             text: 'Terjadi kesalahan saat menghapus data.',
                             icon: 'error',
-                            customClass: { popup: 'rounded-2xl' }
+                            customClass: {
+                                popup: 'rounded-2xl'
+                            }
                         });
                         console.log(error);
                     });
@@ -307,6 +407,42 @@
 </script>
 
 <style>
+    /* Smooth Transitions */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+
+    /* Animation Delays for Background Elements */
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+
+    /* Float Animation */
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px) translateX(0px);
+            opacity: 0.3;
+        }
+
+        50% {
+            transform: translateY(-20px) translateX(10px);
+            opacity: 0.5;
+        }
+    }
+
+    .animate-float {
+        animation: float 8s ease-in-out infinite;
+    }
+
+    /* Fade In Animation */
     @keyframes fadeInDown {
         from {
             opacity: 0;
@@ -323,6 +459,19 @@
         animation: fadeInDown 0.4s ease-out;
     }
 
+    /* Menghilangkan underline pada link */
+    a {
+        text-decoration: none;
+    }
+
+    /* Custom focus style for inputs */
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+    }
+
+    /* Line clamp for description */
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;

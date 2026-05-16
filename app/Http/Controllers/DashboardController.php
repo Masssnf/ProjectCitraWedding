@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Paket;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -37,6 +38,7 @@ class DashboardController extends Controller
         // dijamin hanya akan dieksekusi jika yang login adalah Admin/Owner.
 
         $totalBooking = Transaksi::count();
+        $totalPaket = Paket::count();
         $totalPembayaran = Transaksi::sum('total_bayar');
         $totalClient = Client::distinct('id')->count('id');
         $daftarTanggalAcara = Transaksi::orderBy('tanggal_acara', 'asc')->get();
@@ -68,6 +70,7 @@ class DashboardController extends Controller
         return view('dashboard', compact(
             'totalBooking',
             'totalClient',
+            'totalPaket',
             'daftarTanggalAcara',
             'now',
             'acaraBulanIni',
