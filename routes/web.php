@@ -21,10 +21,15 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WardrobeController;
 use App\Models\Album;
+use App\Models\Paket;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    // Mengambil semua data paket dari database
+    $paket = Paket::all();
+
+    // Mengirim variabel $paket ke view welcome
+    return view('welcome', compact('paket'));
 });
 
 Route::get('/dashboard', function () {
