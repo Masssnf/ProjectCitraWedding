@@ -12,6 +12,7 @@ class Paket extends Model
     protected $fillable = [
         'kode_paket',
         'jenis_paket',
+        'nama_paket',
         'id_makeup',
         'id_catering',
         'id_album',

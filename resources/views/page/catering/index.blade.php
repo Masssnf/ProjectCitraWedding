@@ -165,10 +165,12 @@
                                 <thead
                                     class="text-xs text-gray-500 uppercase tracking-wider bg-white/30 backdrop-blur-sm">
                                     <tr>
-                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-16">No</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold">Tipe Catering & Menu</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold">Detail Porsi & Harga</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold text-center">Aksi</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-12">No</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Tipe Catering</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Deskripsi Menu</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-28">Jumlah Porsi</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-36">Total Harga</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-28">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-white/30">
@@ -180,26 +182,29 @@
                                                 {{ ($catering->currentPage() - 1) * $catering->perPage() + $loop->iteration }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="font-semibold text-gray-800 mb-1">
+                                                <div class="font-semibold text-gray-800">
                                                     <i class="fas fa-utensils text-indigo-500 mr-2"></i>
                                                     {{ $c->type_catering }}
                                                 </div>
-                                                <div class="text-gray-500 text-xs font-light line-clamp-2 max-w-xs">
+                                             </div>
+                                            <td class="px-6 py-4">
+                                                <div class="text-gray-600 text-sm line-clamp-2 max-w-xs">
                                                     <i class="fas fa-align-left text-gray-400 mr-1"></i>
                                                     {{ $c->deskripsi }}
                                                 </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50/80 backdrop-blur-sm text-amber-600 mb-1">
+                                             </div>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50/80 backdrop-blur-sm text-amber-600">
                                                     <i class="fas fa-users mr-1"></i>
-                                                    {{ number_format($c->porsi, 0, ',', '.') }} Porsi
+                                                    {{ number_format($c->porsi, 0, ',', '.') }}
                                                 </div>
-                                                <div class="font-medium text-emerald-600 mt-1">
+                                             </div>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <div class="font-semibold text-emerald-600">
                                                     <i class="fas fa-money-bill-wave text-emerald-500 mr-1"></i>
                                                     Rp {{ number_format($c->harga, 0, ',', '.') }}
                                                 </div>
-                                            </td>
+                                             </div>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex items-center justify-center gap-2">
                                                     <button type="button"
@@ -219,11 +224,11 @@
                                                         <i class="fas fa-trash-alt mr-1"></i> Hapus
                                                     </button>
                                                 </div>
-                                            </td>
+                                             </div>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="px-6 py-12 text-center">
+                                            <td colspan="6" class="px-6 py-12 text-center">
                                                 <div class="flex flex-col items-center justify-center">
                                                     <div
                                                         class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
@@ -234,7 +239,7 @@
                                                     <p class="text-gray-400 text-sm mt-1">Klik form di samping untuk
                                                         menambahkan catering</p>
                                                 </div>
-                                            </td>
+                                             </div>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -361,10 +366,13 @@
     });
 
     // SCRIPT AUTO-CALCULATE HARGA (Modal Edit)
-    document.getElementById('modal_porsi').addEventListener('input', function() {
-        const porsi = parseInt(this.value) || 0;
-        document.getElementById('modal_harga').value = porsi * 10000;
-    });
+    const modalPorsi = document.getElementById('modal_porsi');
+    if (modalPorsi) {
+        modalPorsi.addEventListener('input', function() {
+            const porsi = parseInt(this.value) || 0;
+            document.getElementById('modal_harga').value = porsi * 10000;
+        });
+    }
 
     // FUNGSI MEMBUKA MODAL EDIT
     const editSourceModal = (button) => {

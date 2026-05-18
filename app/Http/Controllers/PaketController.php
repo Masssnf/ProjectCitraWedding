@@ -89,6 +89,7 @@ class PaketController extends Controller
         $data = [
             'id_client' => $request->input('id_client'),
             'kode_paket' => $request->input('kode_paket'),
+            'nama_paket' => $request->input('nama_paket'),
             'jenis_paket' => $request->input('jenis_paket'),
             'id_album' => $request->input('id_album'),
             'id_makeup' => $request->input('id_makeup'),
@@ -103,7 +104,7 @@ class PaketController extends Controller
             'total_bayar' => $request->input('total_bayar'),
             // 'dibayar' => $request->dibayar ?? 'Belum Lunas',
         ];
-
+    
         Paket::create($data);
 
         return redirect()
@@ -143,7 +144,7 @@ class PaketController extends Controller
         $data = [
             // Perbaiki penangkapan name 'jenis_paket' agar tidak error Null
             'jenis_paket' => $request->input('jenis_paket'),
-
+            'nama_paket' => $request->input('nama_paket'),
             'id_album'    => $request->input('id_album'),
             'id_makeup'   => $request->input('id_makeup'),
             'id_catering' => $request->input('id_catering'),

@@ -162,11 +162,12 @@
                                 <thead
                                     class="text-xs text-gray-500 uppercase tracking-wider bg-white/30 backdrop-blur-sm">
                                     <tr>
-                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-16">No</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold text-center">Gambar</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-12">No</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-24">Gambar</th>
                                         <th scope="col" class="px-6 py-4 font-semibold">Tema Dekorasi</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold">Detail & Harga</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold text-center">Aksi</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Deskripsi</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-32">Harga</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-28">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-white/30">
@@ -182,78 +183,79 @@
                                                 @if ($dekorasi->gambar)
                                                     <img src="{{ asset('storage/' . $dekorasi->gambar) }}"
                                                         alt="{{ $dekorasi->type_dekorasi }}"
-                                                        class="w-16 h-16 object-cover rounded-xl shadow-md border border-white/50">
+                                                        class="w-14 h-14 object-cover rounded-xl shadow-md border border-white/50">
                                                 @else
                                                     <div
-                                                        class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-[10px] text-gray-400 font-light text-center p-2 border border-white/30">
-                                                        <i class="fas fa-image text-gray-400 text-lg mb-1"></i>
-                                                        No Image
+                                                        class="w-14 h-14 bg-white/30 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-[10px] text-gray-400 font-light text-center border border-white/30">
+                                                        <i class="fas fa-image text-gray-400 text-lg"></i>
                                                     </div>
                                                 @endif
-                                            </td>
-
-                                            <td class="px-6 py-4 font-semibold text-gray-800">
-                                                <i class="fas fa-palette text-indigo-500 mr-2"></i>
-                                                {{ $dekorasi->type_dekorasi }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div
-                                                    class="text-gray-500 text-xs font-light mb-1 line-clamp-2 max-w-[12rem]">
-                                                    <i class="fas fa-align-left text-gray-400 mr-1"></i>
-                                                    {{ $dekorasi->deskripsi }}
-                                                </div>
-                                                <div class="font-medium text-emerald-600 mt-1">
-                                                    <i class="fas fa-money-bill-wave text-emerald-500 mr-1"></i>
-                                                    Rp {{ number_format($dekorasi->harga, 0, ',', '.') }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button type="button"
-                                                        class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 rounded-full text-xs font-medium tracking-wide transition-colors"
-                                                        onclick="editSourceModal(this)"
-                                                        data-modal-target="sourceModal" data-id="{{ $dekorasi->id }}"
-                                                        data-type_dekorasi="{{ $dekorasi->type_dekorasi }}"
-                                                        data-deskripsi="{{ $dekorasi->deskripsi }}"
-                                                        data-harga="{{ $dekorasi->harga }}">
-                                                        <i class="fas fa-edit mr-1"></i> Edit
-                                                    </button>
-
-                                                    <button type="button"
-                                                        class="inline-flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
-                                                        onclick="dekorasiDelete('{{ $dekorasi->id }}','{{ addslashes($dekorasi->type_dekorasi) }}')">
-                                                        <i class="fas fa-trash-alt mr-1"></i> Hapus
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="px-6 py-12 text-center">
-                                                <div class="flex flex-col items-center justify-center">
-                                                    <div
-                                                        class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
-                                                        <i class="fas fa-palette text-gray-400 text-3xl"></i>
-                                                    </div>
-                                                    <p class="text-gray-500 font-medium">Belum ada paket dekorasi yang
-                                                        terdaftar</p>
-                                                    <p class="text-gray-400 text-sm mt-1">Klik form di samping untuk
-                                                        menambahkan dekorasi</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
                         </div>
-                        <div class="p-4 border-t border-white/30">
-                            {{ $dekorasis->links() }}
-                        </div>
+
+                        <td class="px-6 py-4 font-semibold text-gray-800">
+                            <i class="fas fa-palette text-indigo-500 mr-2"></i>
+                            {{ $dekorasi->type_dekorasi }}
                     </div>
+
+                    <td class="px-6 py-4">
+                        <div class="text-gray-600 text-sm line-clamp-2 max-w-xs">
+                            <i class="fas fa-align-left text-gray-400 mr-1"></i>
+                            {{ $dekorasi->deskripsi }}
+                        </div>
                 </div>
 
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <div class="font-semibold text-emerald-600">
+                        <i class="fas fa-money-bill-wave text-emerald-500 mr-1"></i>
+                        Rp {{ number_format($dekorasi->harga, 0, ',', '.') }}
+                    </div>
             </div>
+
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+                <div class="flex items-center justify-center gap-2">
+                    <button type="button"
+                        class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                        onclick="editSourceModal(this)" data-modal-target="sourceModal" data-id="{{ $dekorasi->id }}"
+                        data-type_dekorasi="{{ $dekorasi->type_dekorasi }}"
+                        data-deskripsi="{{ $dekorasi->deskripsi }}" data-harga="{{ $dekorasi->harga }}">
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </button>
+
+                    <button type="button"
+                        class="inline-flex items-center px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-full text-xs font-medium tracking-wide transition-colors"
+                        onclick="dekorasiDelete('{{ $dekorasi->id }}','{{ addslashes($dekorasi->type_dekorasi) }}')">
+                        <i class="fas fa-trash-alt mr-1"></i> Hapus
+                    </button>
+                </div>
         </div>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="6" class="px-6 py-12 text-center">
+                <div class="flex flex-col items-center justify-center">
+                    <div
+                        class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-palette text-gray-400 text-3xl"></i>
+                    </div>
+                    <p class="text-gray-500 font-medium">Belum ada paket dekorasi yang
+                        terdaftar</p>
+                    <p class="text-gray-400 text-sm mt-1">Klik form di samping untuk
+                        menambahkan dekorasi</p>
+                </div>
+    </div>
+    </tr>
+    @endforelse
+    </tbody>
+    </table>
+    </div>
+    <div class="p-4 border-t border-white/30">
+        {{ $dekorasis->links() }}
+    </div>
+    </div>
+    </div>
+
+    </div>
+    </div>
     </div>
 
     <!-- Modal Edit Dekorasi -->

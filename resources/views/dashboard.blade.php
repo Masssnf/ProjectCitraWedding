@@ -238,7 +238,7 @@
                                 </a>
 
                                 <!-- Tombol Tambah Client -->
-                                <a href="{{ route('client.create') }}"
+                                <a href="{{ route('client.index') }}"
                                     class="w-full flex items-center justify-between p-3 bg-white/50 backdrop-blur-sm rounded-xl hover:bg-rose-50 transition-all duration-300 group cursor-pointer">
                                     <div class="flex items-center space-x-3">
                                         <div class="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center">

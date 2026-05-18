@@ -82,10 +82,12 @@
                         <table class="w-full text-left text-gray-600">
                             <thead class="text-xs text-gray-500 uppercase tracking-wider bg-white/30 backdrop-blur-sm">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 font-semibold w-16 text-center">No</th>
-                                    <th scope="col" class="px-6 py-4 font-semibold w-1/3">Profil Paket</th>
-                                    <th scope="col" class="px-6 py-4 font-semibold w-1/2">Rincian Fasilitas</th>
-                                    <th scope="col" class="px-6 py-4 font-semibold text-center">Harga & Aksi</th>
+                                    <th scope="col" class="px-6 py-4 font-semibold w-12 text-center">No</th>
+                                    <th scope="col" class="px-6 py-4 font-semibold w-32">Kode Paket</th>
+                                    <th scope="col" class="px-6 py-4 font-semibold w-40">Nama Paket</th>
+                                    <th scope="col" class="px-6 py-4 font-semibold w-48">Profil Paket</th>
+                                    <th scope="col" class="px-6 py-4 font-semibold">Rincian Fasilitas</th>
+                                    <th scope="col" class="px-6 py-4 font-semibold text-center w-40">Harga & Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-white/30">
@@ -97,14 +99,35 @@
                                             {{ $paket->perPage() * ($paket->currentPage() - 1) + $key + 1 }}
                                         </td>
 
+                                        <!-- Kode Paket -->
+                                        <td class="px-6 py-6 align-top">
+                                            <div
+                                                class="inline-flex items-center px-2 py-1 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-700">
+                                                <i class="fas fa-tag mr-1 text-[10px]"></i>
+                                                {{ $p->kode_paket }}
+                                            </div>
+                                         </div>
+
+                                        <!-- Nama Paket -->
+                                        <td class="px-6 py-6 align-top">
+                                            <div class="font-bold text-gray-800">
+                                                <i class="fas fa-gift text-rose-500 mr-1"></i>
+                                                {{ $p->nama_paket ?? $p->jenis_paket }}
+                                            </div>
+                                            <div class="text-xs text-gray-500 mt-1">
+                                                <i class="fas fa-tag text-gray-400 mr-1"></i>
+                                                {{ $p->jenis_paket }}
+                                            </div>
+                                         </div>
+
+                                        <!-- Profil Paket (Gambar) -->
                                         <td class="px-6 py-6 align-top">
                                             <div class="flex flex-col gap-3">
                                                 <div class="flex-shrink-0 relative group/image cursor-pointer"
                                                     onclick="openImagePreview('{{ asset('storage/' . optional($p->dekorasi)->gambar) }}')">
                                                     @if (optional($p->dekorasi)->gambar)
-                                                        <img src="{{ asset('storage/' . $p->dekorasi->gambar) }}"
-                                                            alt="Tema Dekorasi"
-                                                            class="w-full h-40 object-cover rounded-xl shadow-md border border-white/50 cursor-pointer transition-all duration-300 group-hover/image:brightness-75 group-hover/image:scale-[1.02]">
+                                                        <img src="{{ asset('storage/' . $p->dekorasi->gambar) }}" alt="Tema Dekorasi"
+                                                            class="w-full h-32 object-cover rounded-xl shadow-md border border-white/50 cursor-pointer transition-all duration-300 group-hover/image:brightness-75 group-hover/image:scale-[1.02]">
                                                         <div
                                                             class="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 pointer-events-none transition-opacity duration-300">
                                                             <div class="bg-black/50 p-2 rounded-full text-white">
@@ -113,7 +136,7 @@
                                                         </div>
                                                     @else
                                                         <div
-                                                            class="w-full h-40 bg-white/30 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-xs text-gray-400 font-light border border-white/30 border-dashed">
+                                                            class="w-full h-32 bg-white/30 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-xs text-gray-400 font-light border border-white/30 border-dashed">
                                                             <i class="fas fa-image text-gray-400 text-2xl mb-2"></i>
                                                             Tidak Ada Gambar
                                                         </div>
@@ -121,30 +144,28 @@
                                                 </div>
                                                 <div>
                                                     <div
-                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-indigo-100 text-indigo-600 mb-1 tracking-wider uppercase">
-                                                        <i class="fas fa-tag mr-1"></i> Kode: {{ $p->kode_paket }}
+                                                        class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-medium bg-emerald-100 text-emerald-600 tracking-wider uppercase">
+                                                        <i class="fas fa-image mr-1"></i> Preview Dekorasi
                                                     </div>
-                                                    <h4 class="text-base font-bold text-gray-800">{{ $p->jenis_paket }}
-                                                    </h4>
                                                 </div>
                                             </div>
-                                        </td>
+                                         </div>
 
+                                        <!-- Rincian Fasilitas -->
                                         <td class="px-6 py-6 align-top">
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3">
                                                 <div>
                                                     <span class="text-xs font-semibold text-gray-800 block mb-0.5">
                                                         <i class="fas fa-flower text-emerald-500 mr-1"></i> Dekorasi
                                                     </span>
                                                     <div class="text-sm text-gray-700 font-medium">
                                                         {{ optional($p->dekorasi)->type_dekorasi ?? '-' }}</div>
-                                                    <p class="text-[11px] text-gray-500 line-clamp-2 leading-snug">
+                                                    <p class="text-[10px] text-gray-500 line-clamp-1 leading-snug">
                                                         {{ optional($p->dekorasi)->deskripsi ?? '' }}</p>
                                                 </div>
                                                 <div>
                                                     <span class="text-xs font-semibold text-gray-800 block mb-0.5">
-                                                        <i class="fas fa-paint-brush text-rose-400 mr-1"></i> Rias &
-                                                        Busana
+                                                        <i class="fas fa-paint-brush text-rose-400 mr-1"></i> Rias & Busana
                                                     </span>
                                                     <div class="text-sm text-gray-700">
                                                         {{ optional($p->makeup)->type_makeup ?? '-' }}</div>
@@ -157,7 +178,7 @@
                                                     </span>
                                                     <div class="text-sm text-gray-700 font-medium">
                                                         {{ optional($p->catering)->type_catering ?? '-' }}</div>
-                                                    <p class="text-[11px] text-gray-500 line-clamp-1 leading-snug">
+                                                    <p class="text-[10px] text-gray-500 line-clamp-1 leading-snug">
                                                         {{ optional($p->catering)->deskripsi ?? '' }}</p>
                                                 </div>
                                                 <div>
@@ -166,11 +187,10 @@
                                                     </span>
                                                     <div class="text-sm text-gray-700">
                                                         {{ optional($p->hiburan)->type_hiburan ?? '-' }}</div>
-                                                    <div class="text-sm text-gray-700"><i
-                                                            class="fas fa-campground mr-1"></i> Tenda:
+                                                    <div class="text-sm text-gray-700"><i class="fas fa-campground mr-1"></i> Tenda:
                                                         {{ optional($p->tenda)->uk_tenda ?? '-' }}</div>
                                                 </div>
-                                                <div class="sm:col-span-2 border-t border-white/30 pt-3">
+                                                <div class="sm:col-span-2 border-t border-white/30 pt-2 mt-1">
                                                     <span class="text-xs font-semibold text-gray-800 block mb-0.5">
                                                         <i class="fas fa-camera text-indigo-500 mr-1"></i> Dokumentasi
                                                     </span>
@@ -178,8 +198,9 @@
                                                         {{ optional($p->album)->jenis_album ?? '-' }}</div>
                                                 </div>
                                             </div>
-                                        </td>
+                                         </div>
 
+                                        <!-- Harga & Aksi -->
                                         <td class="px-6 py-6 align-top text-center border-l border-white/30">
                                             <div class="mb-4">
                                                 <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">
@@ -192,17 +213,17 @@
                                             </div>
 
                                             @if (Auth::user()->role === 'ADMIN' || Auth::user()->role === 'OWNER')
-                                                <div
-                                                    class="flex flex-col items-center justify-center gap-2 pt-2 border-t border-white/30 mt-4">
-                                                    <button type="button" onclick="editSourceModal(this)"
+                                                <div class="flex flex-col items-center justify-center gap-2 pt-2 border-t border-white/30 mt-4">
+                                                    <button type="button" onclick="editSourceModal(this)" 
                                                         data-id="{{ $p->id }}"
-                                                        data-kode_paket="{{ $p->kode_paket }}"
+                                                        data-kode_paket="{{ $p->kode_paket }}" 
                                                         data-jenis_paket="{{ $p->jenis_paket }}"
-                                                        data-makeup="{{ $p->id_makeup }}"
+                                                        data-nama_paket="{{ $p->nama_paket }}"
+                                                        data-makeup="{{ $p->id_makeup }}" 
                                                         data-wardrobe="{{ $p->id_wardrobe }}"
-                                                        data-album="{{ $p->id_album }}"
+                                                        data-album="{{ $p->id_album }}" 
                                                         data-catering="{{ $p->id_catering }}"
-                                                        data-tenda="{{ $p->id_tenda }}"
+                                                        data-tenda="{{ $p->id_tenda }}" 
                                                         data-dekorasi="{{ $p->id_dekorasi }}"
                                                         data-hiburan="{{ $p->id_hiburan }}"
                                                         class="w-full inline-flex justify-center items-center px-4 py-2 bg-white/50 backdrop-blur-sm border border-white/50 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl text-xs font-medium tracking-wide transition-all shadow-sm">
@@ -225,22 +246,19 @@
                                                     </a>
                                                 </div>
                                             @endif
-                                        </td>
-                                    </tr>
+                                         </div>
+                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-6 py-12 text-center">
+                                        <td colspan="6" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center">
-                                                <div
-                                                    class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
+                                                <div class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
                                                     <i class="fas fa-box-open text-gray-400 text-3xl"></i>
                                                 </div>
-                                                <p class="text-gray-500 font-medium">Belum ada katalog paket yang
-                                                    tersedia</p>
-                                                <p class="text-gray-400 text-sm mt-1">Klik tombol "Tambah Paket Baru"
-                                                    untuk memulai</p>
+                                                <p class="text-gray-500 font-medium">Belum ada katalog paket yang tersedia</p>
+                                                <p class="text-gray-400 text-sm mt-1">Klik tombol "Tambah Paket Baru" untuk memulai</p>
                                             </div>
-                                        </td>
+                                         </div>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -257,26 +275,20 @@
     </div>
 
     <!-- Modal Edit Paket -->
-    <div class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-300"
-        id="sourceModal">
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-300" id="sourceModal">
         <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="sourceModalClose()"></div>
-
-        <div
-            class="relative w-full max-w-5xl bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl mx-4 max-h-[90vh] overflow-y-auto custom-scrollbar transform transition-all border border-white/50">
-
-            <div
-                class="flex items-center justify-between px-8 py-5 border-b border-white/30 sticky top-0 bg-white/95 backdrop-blur-sm z-10 rounded-t-2xl">
+        
+        <div class="relative w-full max-w-5xl bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl mx-4 max-h-[90vh] overflow-y-auto custom-scrollbar transform transition-all border border-white/50">
+            
+            <div class="flex items-center justify-between px-8 py-5 border-b border-white/30 sticky top-0 bg-white/95 backdrop-blur-sm z-10 rounded-t-2xl">
                 <div>
                     <div class="flex items-center space-x-3">
-                        <div
-                            class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
                             <i class="fas fa-edit text-white text-sm"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-gray-800 tracking-wide" id="title_source">Update
-                                Komponen Paket</h3>
-                            <p class="text-xs text-gray-500 mt-0.5">Ubah rincian fasilitas atau harga yang termasuk
-                                dalam paket ini</p>
+                            <h3 class="text-lg font-bold text-gray-800 tracking-wide" id="title_source">Update Komponen Paket</h3>
+                            <p class="text-xs text-gray-500 mt-0.5">Ubah rincian fasilitas atau harga yang termasuk dalam paket ini</p>
                         </div>
                     </div>
                 </div>
@@ -290,8 +302,7 @@
                 @csrf
                 <div class="px-8 py-6 space-y-6">
 
-                    <div
-                        class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/30 backdrop-blur-sm p-4 rounded-xl border border-white/30">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white/30 backdrop-blur-sm p-4 rounded-xl border border-white/30">
                         <div>
                             <x-input-label for="modal_kode_paket" value="Kode Paket"
                                 class="text-gray-700 font-medium mb-1.5 text-xs" />
@@ -299,7 +310,7 @@
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <i class="fas fa-barcode text-gray-400 text-sm"></i>
                                 </div>
-                                <x-text-input type="text" id="modal_kode_paket"
+                                <x-text-input type="text" id="modal_kode_paket" name="kode_paket"
                                     class="block w-full pl-10 bg-gray-100/50 border-white/50 rounded-xl text-sm text-gray-600 cursor-not-allowed font-mono"
                                     readonly />
                             </div>
@@ -322,6 +333,18 @@
                                 </select>
                             </div>
                         </div>
+                        <div>
+                            <x-input-label for="modal_nama_paket" value="Nama Paket Spesifik"
+                                class="text-gray-700 font-medium mb-1.5 text-xs" />
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-signature text-gray-400 text-sm"></i>
+                                </div>
+                                <x-text-input type="text" id="modal_nama_paket" name="nama_paket"
+                                    class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all"
+                                    placeholder="Contoh: Paket Intim Silver 100 Pax" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -338,7 +361,8 @@
                                     <option value="" disabled>Pilih Makeup...</option>
                                     @foreach ($makeup as $m)
                                         <option value="{{ $m->id }}" data-harga="{{ $m->harga }}">
-                                            {{ $m->type_makeup }}</option>
+                                            {{ $m->type_makeup }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -357,7 +381,8 @@
                                     <option value="" disabled>Pilih Wardrobe...</option>
                                     @foreach ($wardrobe as $w)
                                         <option value="{{ $w->id }}" data-harga="{{ $w->harga }}">
-                                            {{ $w->type_wardrobe }}</option>
+                                            {{ $w->type_wardrobe }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -376,7 +401,8 @@
                                     <option value="" disabled>Pilih Dekorasi...</option>
                                     @foreach ($dekorasi as $d)
                                         <option value="{{ $d->id }}" data-harga="{{ $d->harga }}">
-                                            {{ $d->type_dekorasi }}</option>
+                                            {{ $d->type_dekorasi }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -395,7 +421,8 @@
                                     <option value="" disabled>Pilih Catering...</option>
                                     @foreach ($catering as $c)
                                         <option value="{{ $c->id }}" data-harga="{{ $c->harga }}">
-                                            {{ $c->type_catering }}</option>
+                                            {{ $c->type_catering }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -414,7 +441,8 @@
                                     <option value="" disabled>Pilih Tenda...</option>
                                     @foreach ($tenda as $t)
                                         <option value="{{ $t->id }}" data-harga="{{ $t->harga_tenda }}">
-                                            {{ $t->uk_tenda }}</option>
+                                            {{ $t->uk_tenda }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -433,7 +461,8 @@
                                     <option value="" disabled>Pilih Hiburan...</option>
                                     @foreach ($hiburan as $h)
                                         <option value="{{ $h->id }}" data-harga="{{ $h->harga }}">
-                                            {{ $h->type_hiburan }}</option>
+                                            {{ $h->type_hiburan }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -452,7 +481,8 @@
                                     <option value="" disabled>Pilih Album...</option>
                                     @foreach ($album as $a)
                                         <option value="{{ $a->id }}" data-harga="{{ $a->harga }}">
-                                            {{ $a->jenis_album }}</option>
+                                            {{ $a->jenis_album }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -461,8 +491,7 @@
 
                 </div>
 
-                <div
-                    class="flex flex-col md:flex-row items-center justify-between px-8 py-5 bg-gradient-to-r from-emerald-50/80 to-teal-50/80 backdrop-blur-sm rounded-b-2xl gap-4 sticky bottom-0 border-t border-white/30">
+                <div class="flex flex-col md:flex-row items-center justify-between px-8 py-5 bg-gradient-to-r from-emerald-50/80 to-teal-50/80 backdrop-blur-sm rounded-b-2xl gap-4 sticky bottom-0 border-t border-white/30">
                     <div>
                         <span class="block text-[10px] font-bold text-emerald-600 uppercase tracking-wider">
                             <i class="fas fa-calculator mr-1"></i> Estimasi Harga Paket
@@ -492,16 +521,13 @@
     </div>
 
     <!-- Modal Preview Gambar -->
-    <div id="imagePreviewModal"
-        class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div id="imagePreviewModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer" onclick="closeImagePreview()"></div>
         <button onclick="closeImagePreview()" class="absolute top-4 right-4 text-white hover:text-gray-300 p-2 z-10">
             <i class="fas fa-times text-3xl"></i>
         </button>
-        <div class="relative z-10 w-11/12 max-w-4xl mx-auto p-4 transform scale-95 transition-transform duration-300"
-            id="imagePreviewContainer">
-            <img id="previewImage" src="" alt="Preview"
-                class="w-full h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl mx-auto">
+        <div class="relative z-10 w-11/12 max-w-4xl mx-auto p-4 transform scale-95 transition-transform duration-300" id="imagePreviewContainer">
+            <img id="previewImage" src="" alt="Preview" class="w-full h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl mx-auto">
         </div>
     </div>
 
@@ -522,6 +548,7 @@
                 selJenis.value = valJenis;
 
                 document.getElementById('modal_kode_paket').value = button.dataset.kode_paket;
+                document.getElementById('modal_nama_paket').value = button.dataset.nama_paket || '';
                 document.getElementById('modal_id_makeup').value = button.dataset.makeup;
                 document.getElementById('modal_id_album').value = button.dataset.album;
                 document.getElementById('modal_id_wardrobe').value = button.dataset.wardrobe;
@@ -605,8 +632,7 @@
                         });
                         axios.post(`/paket/${id}`, {
                             '_method': 'DELETE',
-                            '_token': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                'content')
+                            '_token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }).then(() => location.reload()).catch((error) => {
                             Swal.fire({
                                 title: '<i class="fas fa-exclamation-triangle text-rose-500 mr-2"></i> Gagal!',

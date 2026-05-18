@@ -144,11 +144,12 @@
                                 <thead
                                     class="text-xs text-gray-500 uppercase tracking-wider bg-white/30 backdrop-blur-sm">
                                     <tr>
-                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-16">No</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-12">No</th>
                                         <th scope="col" class="px-6 py-4 font-semibold">Jenis Album</th>
-                                        <th scope="col" class="px-6 py-4 font-semibold">Deskripsi & Harga</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold">Deskripsi</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold text-center w-32">Harga</th>
                                         @can('role=ADMIN')
-                                            <th scope="col" class="px-6 py-4 font-semibold text-center">Aksi</th>
+                                            <th scope="col" class="px-6 py-4 font-semibold text-center w-28">Aksi</th>
                                         @endcan
                                     </tr>
                                 </thead>
@@ -163,18 +164,22 @@
                                             <td class="px-6 py-4 font-semibold text-gray-800">
                                                 <i class="fas fa-image text-indigo-500 mr-2"></i>
                                                 {{ $album->jenis_album }}
-                                            </td>
+                                             </div>
+
                                             <td class="px-6 py-4">
-                                                <div
-                                                    class="text-gray-500 text-xs font-light mb-1 line-clamp-2 max-w-xs">
+                                                <div class="text-gray-600 text-sm line-clamp-2 max-w-xs">
                                                     <i class="fas fa-align-left text-gray-400 mr-1"></i>
                                                     {{ $album->deskripsi }}
                                                 </div>
-                                                <div class="font-medium text-emerald-600">
+                                             </div>
+
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <div class="font-semibold text-emerald-600">
                                                     <i class="fas fa-money-bill-wave text-emerald-500 mr-1"></i>
                                                     Rp {{ number_format($album->harga, 0, ',', '.') }}
                                                 </div>
-                                            </td>
+                                             </div>
+
                                             @can('role=ADMIN')
                                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                                     <div class="flex items-center justify-center gap-2">
@@ -194,12 +199,12 @@
                                                             <i class="fas fa-trash-alt mr-1"></i> Hapus
                                                         </button>
                                                     </div>
-                                                </td>
+                                                 </div>
                                             @endcan
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="{{ Auth::user()->role == 'ADMIN' ? 4 : 3 }}"
+                                            <td colspan="{{ Auth::user()->role == 'ADMIN' ? 5 : 3 }}"
                                                 class="px-6 py-12 text-center">
                                                 <div class="flex flex-col items-center justify-center">
                                                     <div
@@ -211,7 +216,7 @@
                                                     <p class="text-gray-400 text-sm mt-1">Klik form di samping untuk
                                                         menambahkan album</p>
                                                 </div>
-                                            </td>
+                                             </div>
                                         </tr>
                                     @endforelse
                                 </tbody>

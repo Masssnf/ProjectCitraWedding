@@ -4,8 +4,7 @@
 
     <div class="py-12 bg-gradient-to-br from-indigo-100 via-rose-50 to-purple-100 min-h-screen relative overflow-hidden">
 
-        <!-- Animated Background Elements -->
-        <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
                 class="absolute top-20 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float">
             </div>
@@ -19,7 +18,6 @@
 
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 relative z-10">
 
-            <!-- Welcome Section -->
             <div class="mb-8 text-center">
                 <h1
                     class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-rose-600 bg-clip-text text-transparent">
@@ -29,7 +27,6 @@
                     klien</p>
             </div>
 
-            <!-- Main Card -->
             <div class="relative group">
                 <div
                     class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition duration-500">
@@ -37,7 +34,6 @@
                 <div
                     class="relative bg-white/40 backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden border border-white/50">
 
-                    <!-- Header -->
                     <div class="px-8 py-5 border-b border-white/30 bg-gradient-to-r from-white/30 to-transparent">
                         <div class="flex items-center space-x-3">
                             <div
@@ -56,12 +52,12 @@
                         <form method="POST" action="{{ route('paket.store') }}" class="space-y-8">
                             @csrf
 
-                            <!-- Identitas Paket -->
-                            <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
+                            <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/30 shadow-sm">
                                 <h4
                                     class="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-4 flex items-center">
                                     <i class="fas fa-tag mr-2"></i> 1. Identitas Paket
                                 </h4>
+
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <x-input-label for="kode_paket" value="Kode Paket (Otomatis)"
@@ -77,6 +73,7 @@
                                                 readonly required />
                                         </div>
                                     </div>
+
                                     <div>
                                         <x-input-label for="jenis_paket" value="Jenis Acara / Paket"
                                             class="text-gray-700 font-medium mb-1.5 text-xs" />
@@ -96,10 +93,25 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="md:col-span-2">
+                                        <x-input-label for="nama_paket" value="Nama Paket Spesifik"
+                                            class="text-gray-700 font-medium mb-1.5 text-xs" />
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                                <i class="fas fa-signature text-gray-400 text-sm"></i>
+                                            </div>
+                                            <x-text-input type="text" id="nama_paket" name="nama_paket"
+                                                value="{{ old('nama_paket') }}"
+                                                placeholder="Contoh: Paket Intim Silver 100 Pax"
+                                                class="block w-full pl-10 border-white/50 bg-white/50 backdrop-blur-sm rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 text-gray-700 text-sm transition-all"
+                                                required />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Komponen & Fasilitas -->
                             <div>
                                 <h4
                                     class="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-4 px-2 flex items-center">
@@ -108,7 +120,6 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-2">
 
-                                    <!-- Makeup -->
                                     <div>
                                         <x-input-label for="id_makeup" class="text-gray-700 font-medium mb-1.5 text-xs">
                                             <i class="fas fa-paint-brush text-rose-400 mr-1"></i> Pilihan Make Up
@@ -129,7 +140,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Wardrobe -->
                                     <div>
                                         <x-input-label for="id_wardrobe"
                                             class="text-gray-700 font-medium mb-1.5 text-xs">
@@ -153,7 +163,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Dekorasi -->
                                     <div>
                                         <x-input-label for="id_dekorasi"
                                             class="text-gray-700 font-medium mb-1.5 text-xs">
@@ -176,7 +185,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Catering -->
                                     <div>
                                         <x-input-label for="id_catering"
                                             class="text-gray-700 font-medium mb-1.5 text-xs">
@@ -200,7 +208,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Tenda -->
                                     <div>
                                         <x-input-label for="id_tenda"
                                             class="text-gray-700 font-medium mb-1.5 text-xs">
@@ -223,7 +230,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Hiburan -->
                                     <div>
                                         <x-input-label for="id_hiburan"
                                             class="text-gray-700 font-medium mb-1.5 text-xs">
@@ -246,7 +252,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Album (Full Width) -->
                                     <div class="md:col-span-3">
                                         <x-input-label for="id_album"
                                             class="text-gray-700 font-medium mb-1.5 text-xs">
@@ -273,7 +278,6 @@
                                 </div>
                             </div>
 
-                            <!-- Total Harga & Actions -->
                             <div
                                 class="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 backdrop-blur-sm rounded-2xl p-6 border border-white/30 flex flex-col md:flex-row items-center justify-between gap-6 mt-8">
 
